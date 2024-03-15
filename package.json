@@ -1,0 +1,9 @@
+{
+  "name": "emenu-front",
+  "version": "1.0.0",
+  "repository": "https://github.com/LambdaaTeam/EMenu-front.git",
+  "private": true,
+  "workspaces": [
+    "menu"
+  ]
+}
