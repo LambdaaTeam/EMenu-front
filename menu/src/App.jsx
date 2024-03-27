@@ -1,16 +1,11 @@
-import Login from './components/Login'
-import './App.css'
+import Login from './components/Login.jsx'
+import { Container } from '@chakra-ui/react'
 
 function App() {
-  
-
   return (
-    <>
-      <div>
-        <Login/>
-      </div>
-      
-    </>
+    <Container h='100vh' d='flex' alignItems='center' justifyContent='center'>
+      <Login />
+    </Container>
   )
 }
 
