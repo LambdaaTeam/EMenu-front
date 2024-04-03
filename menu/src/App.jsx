@@ -7,16 +7,12 @@ import './App.css'
 import { ChakraProvider } from '@chakra-ui/react'
 
 function App() {
-  
-
   return (
-    <>
-      <div>
-        <Header/>
-        <Menu/>
-      </div>
-      
-    </>
+    <Container h='100vh' d='flex' alignItems='center' justifyContent='center'>
+      <Login />
+      <Header />
+      <Menu />
+    </Container>
   )
 }
 

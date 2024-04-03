@@ -1,41 +1,32 @@
-import './Login.css';
-
-import { useState } from 'react';
+import { FormControl, FormLabel, Input, Text, Checkbox, Button, Box } from '@chakra-ui/react'
 
 const Login = () => {
-  const [cell, setCell] = useState('');
-
   return (
-    <div className='container'>
-      <div className='box-login'>
-
-
-        <div className='wrap-welcome'>
-          <span className='bem-vindo'> <p>  Bem-vindo, </p> Que bom ver você! </span>
-        </div>
-
-        <div className='wrap-login'>
-          <form className="login-form">
-            <div className='input-name'>
-              <span className='span-dados'> Nome Completo </span>
-              <input className='name' type="text" placeholder='Insira seu nome' required="true" />
-            </div>
-
-            <div className='input-cpf'>
-              <span className='span-dados'> CPF </span>
-              <input className='cpf' type="number" placeholder='000.000.000-00' required="true" />
-            </div>
-
-            <div className='lembrar-me'>
-              <input className='remember-me' type="checkbox" /> <span className='remember'> Lembre de mim </span>
-              <div className='wrap-login-btn'> </div>
-              <button className='login-btn'> Entrar </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-    </div>
+    <Box display='flex' h='100%' flexDirection='column' alignItems='center' justifyContent='space-between'>
+      <Box alignSelf='flex-start' mt='32'>
+        <Text fontSize='2xl' fontWeight='bold' as='h1'>
+          Bem-vindo,
+        </Text>
+        <Text fontSize='2xl' fontWeight='bold' as='h2'>
+          Que bom ver você!
+        </Text>
+      </Box>
+      <Box as='form' w='100%' mb='32'>
+        <FormControl display='flex' flexDirection='column' w='100%' gap='2'>
+          <FormLabel>Nome Completo *</FormLabel>
+          <Input type='email' placeholder='Enter email' />
+          <FormLabel>CPF *</FormLabel>
+          <Input type='email' placeholder='Enter email' />
+          <Checkbox colorScheme='red'>Lembre de mim</Checkbox>
+          <Button colorScheme='red' type='submit' w='100%'>
+            Entrar
+          </Button>
+        </FormControl>
+      </Box>
+      <Text color='gray.500' p='4'>
+        E-Menu solution
+      </Text>
+    </Box>
   )
 }
 
