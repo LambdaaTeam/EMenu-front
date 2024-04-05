@@ -11,10 +11,12 @@ import {
 } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
 import { useState } from 'react';
-import { useDetails } from '../../hooks/Details.jsx'
+import { useDetails } from '../../hooks/Details'
+import { useCart } from '../../hooks/Cart'
 
 const CardsDetails = ({ toggleDetails }) => {
     const { details, setDetails } = useDetails();
+    const { addItem } = useCart()
     const { name, price, image, description } = details;
     return (
         <Card variant="unstyled" padding="15px" >
@@ -47,7 +49,7 @@ const CardsDetails = ({ toggleDetails }) => {
             </CardBody>
             <CardFooter padding='3'>
 
-                <Button variant='solid' width="328px" height="46px" bg='#B6001F' color="#FFF" borderRadius="8px" justifyContent="space-between">
+                <Button variant='solid' width="328px" height="46px" bg='#B6001F' color="#FFF" borderRadius="8px" justifyContent="space-between" onClick={() => addItem(details)}>
                     <Text> Adicionar </Text>
                     <Text> {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} </Text>
                 </Button>

@@ -4,11 +4,14 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import App from './App.jsx'
-import Login from './components/Login/Login.jsx'
-import Cart from './components/Cart/Cart.jsx'
+import Login from './components/Login/Login'
+import Cart from './components/Cart/Cart'
 import {
   DetailsProvider,
-} from './hooks/Details.jsx'
+} from './hooks/Details'
+import {
+  CartProvider,
+} from './hooks/Cart'
 
 const router = createBrowserRouter([
   {
@@ -17,16 +20,18 @@ const router = createBrowserRouter([
   },
   {
     path: "app",
-    element: <App />,
+    element: <App />
   },
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <DetailsProvider>
-      <ChakraProvider>
-        <RouterProvider router={router} />
-      </ChakraProvider>
+      <CartProvider>
+        <ChakraProvider>
+          <RouterProvider router={router} />
+        </ChakraProvider>
+      </CartProvider>
     </DetailsProvider>
   </React.StrictMode>
 )
