@@ -1,41 +1,55 @@
 import {
-    Card, Heading, CardBody, CardFooter, ButtonGroup, Button, Textarea,
-    Stack, Text, Image
-    // , IconButton, AddIcon
+    Card,
+    CardBody,
+    CardFooter,
+    Button,
+    Heading,
+    Image,
+    Stack,
+    Text,
+    Textarea
 } from '@chakra-ui/react'
+import { CloseIcon } from '@chakra-ui/icons'
+import { useState } from 'react';
+import { useDetails } from '../../hooks/Details.jsx'
 
-const CardsDetails = () => {
+const CardsDetails = ({ toggleDetails }) => {
+    const { details, setDetails } = useDetails();
+    const { name, price, image, description } = details;
     return (
-        <Card width="360px" height="800px" variant="unstyled" padding="15px" >
+        <Card variant="unstyled" padding="15px" >
+            <Button variant="unstyled" position="absolute" right="0" top="0" onClick={() => {
+                setDetails({ name: '', price: '', image: '', description: '' })
+                toggleDetails()
+            }}>
+                <CloseIcon />
+            </Button>
             <CardBody >
                 <Stack textAlign="center" width="360px" height="431px" bg="#F8F8F8" marginTop="67px">
-                    <Heading size='md' fontSize="20px"> Coca-Cola 2L </Heading>
+                    <Heading size='md' fontSize="20px"> {name} </Heading>
                     <Image
-                        src='https://i.pinimg.com/originals/52/09/77/520977593cb52286251d0de3ca50751d.png'
-                        alt='Green double couch with wooden legs'
+                        src={image}
                         borderRadius='lg'
                     />
                 </Stack>
 
-                <Stack mt='6' spacing='3'>
+                <Stack mt='6' spacing='3' padding='3'>
                     <Heading size='md' fontSize="16px" color="#8A8A8A" > Descrição: </Heading>
                     <Text color="#A8A8A8" fontSize="12px">
-                        Refrigerante Gaseificado
-                        Artesanal: Uma indulgência refrescante, nosso refrigerante
-                        artesanal é uma fusão única de sabores vibrantes e bolhas suaves,
-                        oferecendo uma experiência de sabor efervescente que vai além
+                        {description}
                     </Text>
+
                     <Text color='#8A8A8A' fontSize='16px'>
                         Alguma observação?
                     </Text>
-                    <Textarea width="328px" height="40px" color="#CDCDCD" placeholder='Ex: Trazer copo com gelo, etc.' />
+                    <Textarea name="observ" w="328px" h="40px" color="#CDCDCD" placeholder='Ex: Trazer copo com gelo, etc.' />
                 </Stack>
             </CardBody>
-            <CardFooter>
+            <CardFooter padding='3'>
 
                 <Button variant='solid' width="328px" height="46px" bg='#B6001F' color="#FFF" borderRadius="8px" justifyContent="space-between">
                     <Text> Adicionar </Text>
-                    <Text> R$3,00</Text>
+                    <Text> {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} </Text>
                 </Button>
 
 

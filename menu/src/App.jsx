@@ -1,18 +1,22 @@
-import Login from './components/Login/Login'
-import Header from './components/Header/Headerr'
+import CardsDetails from './components/Cards/CardsDetails.jsx'
+import Cart from './components/Cart/Cart.jsx'
+import Header from './components/Header/Header'
 import Menu from './components/Header/Menu'
-
-import Home from './components/Home/Home'
-import './App.css'
-import { ChakraProvider } from '@chakra-ui/react'
+import { useState } from 'react'
+import { Stack } from '@chakra-ui/react'
 
 function App() {
+  const [showDetails, setShowDetails] = useState(false);
+
+  const toggleDetails = () => {
+    setShowDetails(!showDetails)
+  }
+
   return (
-    <Container h='100vh' d='flex' alignItems='center' justifyContent='center'>
-      <Login />
-      <Header />
-      <Menu />
-    </Container>
+    <Stack h="100vh" w="100vw" spacing={0}>
+      {/* {showDetails ? <CardsDetails toggleDetails={toggleDetails} /> : (<> <Header /> <Menu toggleDetails={toggleDetails} /> </>)} */}
+      <Cart/>
+    </Stack>
   )
 }
 
