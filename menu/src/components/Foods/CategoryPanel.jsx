@@ -27,7 +27,7 @@ const CategoryPanel = ({ category, toggleDetails }) => {
             m={0}
           >
             <CardsDrinks cardsDrink={item} key={item.id} />
-          </Button>
+           </Button>
         ))}
       </TabPanel>
     </>

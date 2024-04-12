@@ -1,8 +1,12 @@
 import { Avatar, Stack, Text, Image, Link, Button } from '@chakra-ui/react'
 import { useCart } from '../../hooks/Cart'
 
+
 const header = ({ title }) => {
   const { toggleCart } = useCart()
+
+  const { cart } = useCart()
+
   return (
     <>
       <Stack
@@ -20,11 +24,11 @@ const header = ({ title }) => {
           <Avatar src='/restaurant-pfp.png' />
         </Link>
         <Text> {title} </Text>
-        <Button display='flex' flexDirection='row' gap='2' alignItems='center' bg='transparent' color='white' onClick={() => toggleCart()}>
+        <Button display='flex' flexDirection='row' gap='2' alignItems='center' bg='transparent' color='white' _hover={{ bg: "transparent" }} onClick={() => toggleCart()}>
           <Image src='/bag.png' boxSize='6' />
           <Stack spacing='0'>
             <Text fontSize='xs'>R$ 0, 00</Text>
-            <Text fontSize='xs'>0 items</Text>
+            <Text fontSize='xs'> {cart.length} items</Text>
           </Stack>
         </Button>
       </Stack>
