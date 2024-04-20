@@ -5,58 +5,31 @@ import {
 } from "@chakra-ui/react";
 import { ArrowForwardIcon, SmallCloseIcon, ChatIcon } from '@chakra-ui/icons'
 import { IoChatbubbleOutline, IoTimeSharp } from "react-icons/io5";
-import { useState } from "react";
 
+const formatDate = (date) => {
+  const day = date.getDay().toString().padStart(2, '0')
+  const mounth = date.getMonth().toString().padStart(2, '0')
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
 
+  return `${day}/${mounth} ${hours}:${minutes}`
+}
 
-const CardPedido = () => {
+const CardPedido = ({ info }) => {
  
   return (
-    <Card textAlign="left" bg="white" w="480px" h="180px" maxW="auto" mx="auto" p="15px" marginTop="25px" borderRadius="16px">
-      <CardHeader display="flex" flexDirection="row" >
-        <Heading size='md'> Pizza de frango </Heading>
-        <Popover placement='top-start'>
-          <PopoverTrigger>
-            <Button
-              position="absolute"
-              right="50"
-              top="50"
-              _hover={{ bg: "#EEEFF1" }}
-              _active={{ bg: "transparent" }}
-              _focus={{ boxShadow: "none" }}
-              p={0}
-              cursor={"pointer"}
-              flexDirection="right"
-              h={"10%"}
-              border="none"
-              bg={"#EEEFF1"}
-              borderRadius={"100px"}
-              m={0}>  <IoChatbubbleOutline /> </Button>
-          </PopoverTrigger>
-          <PopoverContent border="1px solid gray" h="95px" w="155px" borderRadius="md" bg="white">
-            <Box display="flex" p="5px" justifyContent="space-between">
-              <PopoverHeader fontWeight='semibold'>Observações: </PopoverHeader>
-
-              <PopoverArrow />
-              <PopoverCloseButton w="10px" border="none" bg="transparent" textAlign="right" />
-            </Box>
-            <Divider bg="red" borderWidth="2px" orientation="horizontal" />
-            <PopoverBody p="5px">
-              Blá blá blá
-            </PopoverBody>
-
-          </PopoverContent>
-        </Popover>
-
+    <Card textAlign="left" bg="white" m="12" p='16' borderRadius="16">
+      <CardHeader>
+        <Heading size='md' my='2'>{info.name}</Heading>
       </CardHeader>
       <CardBody>
-        <Text> Mesa: </Text>
-        <Text> Cliente: </Text>
-
+        <Text> Mesa: {info.table} </Text>
+        <Text> Cliente: {info.client} </Text>
+        <Text> Observações: {info.obs} </Text>
       </CardBody>
       <CardFooter display="flex" justifyContent="space-between" >
         <Box>
-          <IoTimeSharp color="9E0000" /> 19:30
+          <IoTimeSharp color="9E0000" /> {formatDate(info.date)}
         </Box>
         <ButtonGroup  >
           <Button bg="#EEEFF1"

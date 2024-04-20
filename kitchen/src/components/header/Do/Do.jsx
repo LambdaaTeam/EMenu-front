@@ -6,11 +6,28 @@ import { useState } from "react";
 
 const Do = () => {
   const [showCard, setShowCard] = useState(true);
+  const [cards, setCards] = useState({
+    todo: [
+      {
+        id: 1,
+        table: 10,
+        name: 'Pizza de frango',
+        price: 17.0,
+        status: "todo",
+        date: new Date(),
+        obs: 'Sem borda',
+        client: 'Felipe Kamada',
+        quantity: 1
+      }
+    ],
+    doing: [],
+    finished: []
+  })
 
   const handleButtonClick = () => {
     setShowCard(!showCard);
   };
-  
+
   return (
     <Grid templateColumns="repeat(3, 1fr)" templateRows='repeat(1, 1fr)' textAlign="center">
       <GridItem bg="#F8D6D6">
@@ -28,8 +45,11 @@ const Do = () => {
       </GridItem>
       <Box textAlign="center" bg="#EFF5F5" height="100vh">
         <GridItem height="100%">
-          <Card />
-          <ButtonAdd/>
+          {
+            cards.todo.map(c => (<Card key={c.id} info={{...c}} />))
+          }
+        {/* <Card /> */}
+          <ButtonAdd />
         </GridItem>
       </Box>
 
@@ -43,7 +63,6 @@ const Do = () => {
       <Box textAlign="center" bg="#EFF5F5" height="100vh">
         <GridItem height="100%">
           {/* <Card /> */}
-
         </GridItem>
       </Box>
 
