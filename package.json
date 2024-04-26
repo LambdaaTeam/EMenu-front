@@ -4,6 +4,6 @@
   "repository": "https://github.com/LambdaaTeam/EMenu-front.git",
   "private": true,
   "workspaces": [
-    "menu", "kitchen"
+    "menu", "kitchen", "dashboard"
   ]
 }
