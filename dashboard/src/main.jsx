@@ -6,11 +6,13 @@ import Dashboard from './components/Dashboard'
 import { DashboardProvider } from './hooks/Store'
 
 import './index.css'
+import Acess from './components/Login/Acess'
+import Login from './components/Login/Login'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <h1>Login</h1>
+    element: <Login/>
   },
   {
     path: '/dashboard',
