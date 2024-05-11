@@ -2023,7 +2023,7 @@ chalk@^4.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-classnames@^2.2.5:
+classnames@^2.2.0, classnames@^2.2.5:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
   integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
@@ -3396,6 +3396,13 @@ react-fast-compare@3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.2.tgz#929a97a532304ce9fee4bcae44234f1ce2c21d49"
   integrity sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==
+
+react-flipcard@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-flipcard/-/react-flipcard-0.2.1.tgz#7d439c5755e5a58d81ddea0c8ff0712c3d8e8048"
+  integrity sha512-oo8YlmkrhotMst8FhuuwSW5KqLfszgkgp9+vVVouAPYc8EIQeGL3q1iSwjStasy8JdUTgCMohlp/iFj6k945Ng==
+  dependencies:
+    classnames "^2.2.0"
 
 react-focus-lock@^2.9.4:
   version "2.11.2"
