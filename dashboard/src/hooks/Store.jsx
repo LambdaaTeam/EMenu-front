@@ -17,6 +17,7 @@ export const DashboardProvider = ({ children }) => {
     id: '662b03d839f330bc5518c21d',
     name: 'Pizzaria VAPO',
     email: 'psykka@email.com',
+    avatar: 'https://i.pravatar.cc/150',
     address: {
       city: 'Matão',
       country: 'Brazil',

@@ -1,29 +1,121 @@
 import React from 'react'
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useDashboard } from '../hooks/Store'
+import {
+  Avatar,
+  Flex,
+  Stack,
+  Image,
+  Input,
+  Hide,
+  Box,
+  Text,
+  theme
+} from '@chakra-ui/react'
+
+import {
+  NotepadText,
+  HandPlatter,
+  Search,
+  LogOut,
+  Settings,
+  ChefHat,
+  Utensils,
+  Tag
+} from 'lucide-react'
+
+const iconProps = {
+  size: 18,
+  color: theme.colors.gray[600]
+}
+
+const links = {
+  top: [
+    { to: 'menu', label: 'Menu', icon: <ChefHat  {...iconProps} /> },
+    { to: 'tables', label: 'Mesas', icon: <HandPlatter {...iconProps} /> },
+    { to: 'products', label: 'Produtos', icon: <Utensils {...iconProps} /> },
+    { to: 'categories', label: 'Categorias', icon: <Tag {...iconProps} /> },
+    { to: 'orders', label: 'Pedidos', icon: <NotepadText {...iconProps} /> },
+  ],
+  bottom: [
+    { to: '#', label: 'Settings', icon: <Settings {...iconProps} /> },
+    { to: '#', label: 'Exit', icon: <LogOut {...iconProps} /> },
+  ]
+}
+
+const NavItem = ({ to, label, icon, bg, bgHolver = '' }) => {
+  const location = useLocation()
+  const isActive = (to) => location.pathname.includes(to)
+
+  return (
+    <Stack>
+      <Link key={to} to={to}>
+        <Box key={to} py={2} px={8} bg={isActive(to) ? bg : ''} borderRadius="md" _hover={{ bg: bgHolver }} transition="background-color 0.2s">
+          <Flex alignItems="center" gap={4}>
+            {icon}
+            <Text as="span" fontSize="sm" color={isActive(to) ? 'gray.800' : 'gray.600'}>
+              {label}
+            </Text>
+          </Flex>
+        </Box>
+      </Link>
+    </Stack>
+  )
+}
+
+const Nav = () => {
+  return (
+    <Stack as="nav" direction="column" borderRight="1px solid" borderColor='gray.300' p={2} h="100%">
+      <Stack spacing={2} mt={2}>
+        {links.top.map((link) => (
+          <NavItem key={link.to} {...link} bg='gray.200' bgHolver='gray.100' />
+        ))}
+      </Stack>
+      <Stack direction="column" spacing={0} mt="auto" mb={2}>
+        {links.bottom.map((link) => (
+          <NavItem key={link.to} {...link} bg='gray.200' bgHolver='gray.100' />
+        ))}
+      </Stack>
+    </Stack >
+  )
+}
+
+const SearchBar = () => {
+  return (
+    <Hide below='md'>
+      <Flex direction="row" alignItems="center" border="1px solid" borderColor='gray.300' borderRadius="md" px={4} py={1} gap={4} w='50%'>
+        <Search size={18} color={theme.colors.gray[300]} />
+        <Input placeholder="Search" variant="unstyled" />
+      </Flex>
+    </Hide>
+  )
+}
+
+const Header = () => {
+  const { dashboard } = useDashboard()
+
+  return (
+    <Stack direction="row" as="header" borderBottom="1px solid" borderColor='gray.300' justifyContent='space-between' alignItems='center' p={2}>
+      <Link to='/dashboard'>
+        <Image src="https://placehold.co/150x40" alt="E-Menu" />
+      </Link>
+      <SearchBar />
+      <Avatar name={dashboard.name} size="sm" src={dashboard.avatar ?? ""} />
+    </Stack>
+  )
+}
 
 const Dashboard = () => {
-  // Usar o hook useDashboard para acessar o estado global
-  const { dashboard } = useDashboard()
-  
-  // Fazer o layout do dashboard aqui
   return (
-    <div>
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', justifyContent: 'space-between', padding: 10 }}>
-        <h1>Dashboard</h1>
-        <div style={{ display: 'flex', gap: '10px', color: 'blue', textDecoration: 'underline' }}>
-          <Link to="/dashboard">Home</Link>
-          <Link to="/dashboard/analytics">Analytics</Link>
-          <Link to="/dashboard/products">Products</Link>
-        </div>
-        <div>
-          <h2>{dashboard.name}</h2>
-        </div>
-      </div>
-
-      {/* Aqui é onde os componentes filhos são renderizados */}
-      <Outlet />
-    </div>
+    <Stack h="100vh" direction="column" spacing={0}>
+      <Header />
+      <Stack direction="" h="100%">
+        <Nav />
+        <Flex direction="column" h="100%" p={2}>
+          <Outlet />
+        </Flex>
+      </Stack>
+    </Stack >
   )
 }
 

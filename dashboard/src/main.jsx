@@ -6,28 +6,41 @@ import Dashboard from './components/Dashboard'
 import { DashboardProvider } from './hooks/Store'
 
 import './index.css'
+import Acess from './components/Login/Acess'
+import Login from './components/Login/Login'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <h1>Login</h1>
+    element: <Login/>
   },
   {
     path: '/dashboard',
     element: <Dashboard />,
     children: [
       {
-        // mostrar as mesas do restaurante
         index: true,
-        element: <h1>Home</h1>
-      },
-      {
-        path: 'analytics',
         element: <h1>Analytics</h1>
       },
       {
+        path: 'tables',
+        element: <h1>Mesas</h1>
+      },
+      {
+        path: 'menu',
+        element: <h1>Menu</h1>
+      },
+      {
+        path: 'orders',
+        element: <h1>Pedidos</h1>
+      },
+      {
         path: 'products',
-        element: <h1>Products</h1>
+        element: <h1>Produtos</h1>
+      },
+      {
+        path: 'categories',
+        element: <h1>Categorias</h1>
       }
     ]
   }
