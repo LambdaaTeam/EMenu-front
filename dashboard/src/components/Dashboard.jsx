@@ -97,7 +97,7 @@ const Header = () => {
   return (
     <Stack direction="row" as="header" borderBottom="1px solid" borderColor='gray.300' justifyContent='space-between' alignItems='center' p={2}>
       <Link to='/dashboard'>
-        <Image src="https://placehold.co/150x40" alt="E-Menu" />
+        <Image src="https://placehold.co/150x40?text=E-Menu+Logo" alt="E-Menu" />
       </Link>
       <SearchBar />
       <Avatar name={dashboard.name} size="sm" src={dashboard.avatar ?? ""} />
@@ -111,7 +111,7 @@ const Dashboard = () => {
       <Header />
       <Stack direction="" h="100%">
         <Nav />
-        <Flex direction="column" h="100%" p={2}>
+        <Flex direction="column" h="100%" w="100%" p={2}>
           <Outlet />
         </Flex>
       </Stack>

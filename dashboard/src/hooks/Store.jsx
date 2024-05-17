@@ -17,7 +17,7 @@ export const DashboardProvider = ({ children }) => {
     id: '662b03d839f330bc5518c21d',
     name: 'Pizzaria VAPO',
     email: 'psykka@email.com',
-    avatar: 'https://i.pravatar.cc/150',
+    avatar: 'https://loremflickr.com/300/300/cat',
     address: {
       city: 'Matão',
       country: 'Brazil',
@@ -42,7 +42,7 @@ export const DashboardProvider = ({ children }) => {
   // Exemplo de como fazer uma requisição para a API
   const fetchTables = useCallback(async () => {
     // Fazer a requisição para a API
-    const response = await fetch(`https://api.emenu.psykka.xyz/restaurant/${dashboard.id}/tables`)
+    const response = await fetch(`https://api.emenu.psykka.xyz/restaurant/@me/tables`)
 
     // Verificar se a requisição foi bem sucedida
     if (!response.ok) {

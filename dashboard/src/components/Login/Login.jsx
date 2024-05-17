@@ -1,29 +1,9 @@
 import { Stack, Box, Text, Heading, FormLabel, FormControl, Checkbox, Input, Button, Image } from '@chakra-ui/react'
-import FlipCard from 'react-flipcard';
-import { useState } from 'react';
+
+
 
 const Login = () => {
-    const [isFlipped, setIsFlipped] = useState(false);
-    const showBack = () => {
-        setIsFlipped(true);
-      };
     
-      const showFront = () => {
-        setIsFlipped(false);
-      };
-    
-      const handleOnFlip = (flipped) => {
-        if (flipped) {
-          // Foca no botão de voltar
-          // (você pode usar useRef para obter a referência)
-        }
-      };
-    
-      const handleKeyDown = (e) => {
-        if (isFlipped && e.keyCode === 27) {
-          showFront();
-        }
-      };
     
     return (
         <Stack display="flex" direction="row" >
@@ -32,8 +12,7 @@ const Login = () => {
                 <Text> O E-menu Solution fornece o melhor sistema necessário
                     para administrar o seu estabelecimento </Text>
             </Stack>
-            <FlipCard isFlipped={isFlipped} flipDirection="vertical"
-        >
+            
              <Stack h="100vh" textAlign="center" marginLeft="23vh" >
                 <Box w="500px">
                     <Image src='/logoEmenu.jpg' left="72px" top="22px" />
@@ -61,7 +40,7 @@ const Login = () => {
                         color="white"
                         _hover={"#B6001F"}
                         w="480px"
-                        onClick={this.showBack}
+                      
                         >
 
                         Continue
@@ -96,7 +75,7 @@ const Login = () => {
                     </Button>
                 </Box>
             </Stack>
-            </FlipCard>
+          
             
         </Stack>
     )
