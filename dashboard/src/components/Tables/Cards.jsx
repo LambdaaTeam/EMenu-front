@@ -20,7 +20,7 @@ const Cards = ({ status }) => {
   const color = colors[status]
 
   return (
-    <Link to= "./Clients"> 
+    <Link to= "./Clients" _hover={"none"}> 
     <GridItem>
       <Card textAlign="left" borderRadius="16" borderRight="20px solid" borderColor={color}>
         <CardHeader display="flex" justifyContent="space-between" alignItems="center">

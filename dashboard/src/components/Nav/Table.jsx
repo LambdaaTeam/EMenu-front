@@ -22,7 +22,7 @@ const Table = () => {
         <Icon
           boxSize='2'
           viewBox='0 0 200 200'
-          color='red.500'
+          color='yellow.400'
           alignSelf='center'
         >
           <path
@@ -34,7 +34,7 @@ const Table = () => {
         <Icon
           boxSize='2'
           viewBox='0 0 200 200'
-          color='#CDD043'
+          color='gray.400'
           alignSelf='center'
         >
           <path

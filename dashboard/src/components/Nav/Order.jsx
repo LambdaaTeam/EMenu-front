@@ -25,7 +25,7 @@ const Order = () => {
                         <Td textAlign="center" fontSize="14px"> R$200,00 </Td>
                         <Td textAlign="center" fontSize="14px"> 03/04/2024  </Td>
                         <Td textAlign="center" fontSize="14px"> <Badge bg='#EBFFF1' color="#119C2B" >  Sucesso </Badge> </Td>
-                        <Td> </Td>
+                        
                     </Tr>
 
                 </Tbody>

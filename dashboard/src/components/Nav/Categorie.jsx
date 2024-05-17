@@ -55,7 +55,7 @@ const Categorie = () => {
                     closeOnBlur={false}
                 >
                     <PopoverTrigger>
-                        <Button bg="#B6001F" _hover={"#B6001F"} color="white" marginTop="25" marginRight="35"> <AddIcon fontSize={14} /> Criar pagamento </Button>
+                        <Button bg="#B6001F" _hover={"#B6001F"} color="white" marginTop="25" marginRight="35"> <AddIcon fontSize={14} /> Criar categoria </Button>
                     </PopoverTrigger>
                     <PopoverContent p={5}>
                         <FocusLock returnFocus persistentFocus={false}>
