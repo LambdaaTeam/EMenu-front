@@ -9,7 +9,7 @@ import {
   Button,
   theme
 } from '@chakra-ui/react'
-import { ArrowBigRight } from 'lucide-react'
+import { ArrowBigRight, Trash2 } from 'lucide-react'
 
 const status = {
   TO_PREPARE: 'TO_PREPARE',
@@ -57,7 +57,11 @@ const ItemInfo = ({ item, handleNextStatus }) => {
           </Flex>
         </Stack>
         <Button size="sm" onClick={() => handleNextStatus(item.orderId, item.id)}>
-          <ArrowBigRight color={theme.black} />
+          {item.status === status.READY ? (
+            <Trash2 color={theme.black} />
+          ) : (
+            <ArrowBigRight color={theme.black} />
+          )}
         </Button>
       </HStack>
     </Card>
