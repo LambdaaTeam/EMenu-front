@@ -48,15 +48,15 @@ const ItemInfo = ({ item, handleNextStatus }) => {
       <HStack justifyContent="space-between">
         <Stack spacing={2} w="100%" borderRight="2px solid" borderColor="black" pr={4}>
           <Flex justifyContent="space-between">
-            <Text fontSize="sm">{item.clientName}</Text>
+            <Text fontSize="md">{item.clientName}</Text>
             <Text fontSize="sm" fontWeight="bold">Mesa {item.table}</Text>
           </Flex>
           <Flex gap={2}>
-            <Text fontSize="sm">{item.name}</Text>
-            <Text fontSize="sm">x{item.quantity}</Text>
+            <Text fontSize="md">{item.name}</Text>
+            <Text fontSize="md" fontWeight='bold'>x{item.quantity}</Text>
           </Flex>
         </Stack>
-        <Button size="sm" onClick={() => handleNextStatus(item.orderId, item.id)}>
+        <Button onClick={() => handleNextStatus(item.orderId, item.id)}>
           {item.status === status.READY ? (
             <Trash2 color={theme.black} />
           ) : (
@@ -108,7 +108,7 @@ const App = () => {
           name: 'Item 4',
           price: 10.00,
           status: status.TO_PREPARE,
-          quantity: 1,
+          quantity: 2,
         },
         {
           id: 5,
@@ -163,7 +163,7 @@ const App = () => {
     <Box p={4}>
       <Text fontSize="xl" fontWeight="bold" mb={4} textAlign={'center'}>Pedidos</Text>
       <Stack direction="row" gap={4}>
-        <Box w="100%" h="100%" bg="blue.50" borderRadius="md" p={4}>
+        <Box w="100%" h="100%" bg="blue.100" borderRadius="md" p={4}>
           <Text fontSize="lg" fontWeight="bold" mb={4}>Aguardando</Text>
           <Stack>
             {toprepare.map(order => (
@@ -171,7 +171,7 @@ const App = () => {
             ))}
           </Stack>
         </Box>
-        <Box w="100%" h="100%" bg="yellow.50" borderRadius="md" p={4}>
+        <Box w="100%" h="100%" bg="yellow.100" borderRadius="md" p={4}>
           <Text fontSize="lg" fontWeight="bold" mb={4}>Em Preparo</Text>
           <Stack>
             {preparing.map(order => (
@@ -179,7 +179,7 @@ const App = () => {
             ))}
           </Stack>
         </Box>
-        <Box w="100%" h="100%" bg="green.50" borderRadius="md" p={4}>
+        <Box w="100%" h="100%" bg="green.100" borderRadius="md" p={4}>
           <Text fontSize="lg" fontWeight="bold" mb={4}>Pronto</Text>
           <Stack>
             {ready.map(order => (
