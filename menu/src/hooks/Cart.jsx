@@ -61,6 +61,7 @@ export const CartProvider = ({ children }) => {
 
     const toggleCart = () => setCart((prevCart) => ({ ...prevCart, displaying: !prevCart.displaying }))
     const setCartDisplaying = (displaying) => setCart((prevCart) => ({ ...prevCart, displaying }))
+    const resetCart = () => setCart({ items: [], displaying: false })
     const cartTotal = cart.items.reduce((acc, item) => acc + item.price * item.quantity, 0)
 
     return (
@@ -70,7 +71,8 @@ export const CartProvider = ({ children }) => {
             removeItem,
             toggleCart,
             setCartDisplaying,
-            cartTotal
+            cartTotal,
+            resetCart
         }}>
             {children}
         </CartContext.Provider>
