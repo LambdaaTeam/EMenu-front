@@ -5,14 +5,27 @@ import {
     Text,
     Icon
 } from '@chakra-ui/react'
+import { useDetails } from '../../hooks/Details';
 
-const CardsDrinks = ({ cardsDrink }) => {
+const CardsDrinks = ({ cardsDrink, toggleDetails }) => {
     const { name, price, image, description } = cardsDrink;
+    const { setDetails } = useDetails()
 
-    // const { details, setDetails } = useDetails();
     return (
-        <Card display='flex' flexDir='row' gap='4' borderRadius='24' boxShadow='none' my='2' w='100%' mx='4'>
-            {/* {cardsDrink.items.map((item) => (<CardsDetails cardDetails={item} />))} */}
+        <Card
+            display='flex'
+            flexDir='row'
+            gap='4'
+            borderRadius='24'
+            boxShadow='none'
+            my='2'
+            w='100%'
+            cursor='pointer'
+            onClick={() => {
+                setDetails(cardsDrink)
+                toggleDetails()
+            }}
+        >
             <Image src={image} objectFit='fill' boxSize='20' />
             <Stack mt='2'>
                 <Text

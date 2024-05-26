@@ -1,38 +1,43 @@
-import { Avatar, Stack, Text, Image, Link, Button } from '@chakra-ui/react'
+import { Avatar, Stack, Text, Image, Button } from '@chakra-ui/react'
 import { useCart } from '../../hooks/Cart'
 
-
 const header = ({ title }) => {
-  const { toggleCart } = useCart()
-
-  const { cart } = useCart()
+  const { toggleCart, setCartDisplaying, cart } = useCart()
 
   return (
-    <>
-      <Stack
-        width="100%"
-        color="#FFF"
-        height="110px"
-        bgGradient='linear(#50000E 0%, #B6001F 100%)'
+    <Stack
+      width="100%"
+      color="#FFF"
+      bg="#B6001F"
+      display='flex'
+      flexDirection='row'
+      alignItems='center'
+      padding='1rem'
+      spacing={0}
+    >
+      <Stack display='flex' flexDirection='row' alignItems='center' spacing={4} onClick={() => setCartDisplaying(false)} cursor='pointer'>
+        <Avatar src='/restaurant-pfp.png' />
+        <Text fontSize='lg' fontWeight='bold'>
+          {title}
+        </Text>
+      </Stack>
+      <Button
         display='flex'
         flexDirection='row'
-        justifyContent='space-between'
-        alignItems='center'
-        p='4'
+        bg='transparent'
+        color='white'
+        _hover={{ bg: "transparent" }}
+        _active={{ bg: "transparent" }}
+        onClick={() => toggleCart()}
+        marginLeft='auto'
       >
-        <Link href='/app'>
-          <Avatar src='/restaurant-pfp.png' />
-        </Link>
-        <Text> {title} </Text>
-        <Button display='flex' flexDirection='row' gap='2' alignItems='center' bg='transparent' color='white' _hover={{ bg: "transparent" }} onClick={() => toggleCart()}>
-          <Image src='/bag.png' boxSize='6' />
-          <Stack spacing='0'>
-            <Text fontSize='xs'>R$ 0, 00</Text>
-            <Text fontSize='xs'> {cart.length} items</Text>
-          </Stack>
-        </Button>
-      </Stack>
-    </>
+        <Image src='/bag.png' />
+        <Stack spacing='0'>
+          <Text fontSize='xs'>R$ 0,00</Text>
+          <Text fontSize='xs'> {cart.length} items</Text>
+        </Stack>
+      </Button>
+    </Stack>
   )
 }
 

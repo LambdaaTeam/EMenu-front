@@ -19,8 +19,29 @@ function App() {
         name: "Pizza",
         price: 17.00,
         description: "Pizza com orégano",
-        image: "https://placehold.co/83x93"
-      }
+        image: "https://placehold.co/400"
+      },
+      {
+        id: "item002",
+        name: "Pizza",
+        price: 17.00,
+        description: "Pizza com orégano",
+        image: "https://placehold.co/400"
+      },
+      {
+        id: "item003",
+        name: "Pizza",
+        price: 17.00,
+        description: "Pizza com orégano",
+        image: "https://placehold.co/400"
+      },
+      {
+        id: "item004",
+        name: "Pizza",
+        price: 17.00,
+        description: "Pizza com orégano",
+        image: "https://placehold.co/400"
+      },
     ],
     categories: [
       {
@@ -28,21 +49,21 @@ function App() {
         name: "Pizzas",
         items: [
           {
-            id: "item001",
+            id: "item005",
             name: "Pizza",
             image: "https://placehold.co/400",
             description: "Pizza com queijo",
             price: 17.00
           },
           {
-            id: "item001",
+            id: "item006",
             name: "Pizza",
             image: "https://placehold.co/400",
             description: "Pizza com queijo",
             price: 17.00
           },
           {
-            id: "item001",
+            id: "item007",
             name: "Pizza",
             image: "https://placehold.co/400",
             description: "Pizza com queijo",
@@ -55,7 +76,7 @@ function App() {
         name: "Lanches",
         items: [
           {
-            id: "item002",
+            id: "item008",
             name: "X-tudo",
             image: "https://placehold.co/400",
             description: "Ovo, hambúrguer, tomate, queijo, presunto, alface",
@@ -68,7 +89,7 @@ function App() {
         name: "Bebidas",
         items: [
           {
-            id: "item001",
+            id: "item009",
             name: "Coca-cola",
             image: "https://placehold.co/400",
             description: "Bebida gaseificada refrescante",
@@ -81,9 +102,34 @@ function App() {
 
   const toggleDetails = () => setShowDetails(!showDetails)
 
+  if (showDetails) {
+    return (
+      <GetApp>
+        <CardsDetails toggleDetails={toggleDetails} />
+      </GetApp>
+    )
+  }
+
+  if (cart.displaying) {
+    return (
+      <GetApp>
+        <Cart />
+      </GetApp>
+    )
+  }
+
   return (
-    <Stack h="100vh" w="100vw" spacing={0}>
-      {showDetails ? <CardsDetails toggleDetails={toggleDetails} /> : (cart.displaying ? <Cart /> : (<> <Header title={menu.restaurant} /> <Menu menu={menu} toggleDetails={toggleDetails} /> </>))}
+    <GetApp>
+      <Header title={menu.restaurant} />
+      <Menu menu={menu} toggleDetails={toggleDetails} />
+    </GetApp>
+  )
+}
+
+function GetApp({ children }) {
+  return (
+    <Stack h="100vh" direction="column" spacing={0}>
+      {children}
     </Stack>
   )
 }
