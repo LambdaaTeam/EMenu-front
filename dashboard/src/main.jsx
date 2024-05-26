@@ -6,7 +6,6 @@ import Dashboard from './components/Dashboard'
 import { DashboardProvider } from './hooks/Store'
 
 import './index.css'
-import Acess from './components/Login/Acess'
 import Login from './components/Login/Login'
 import Product from './components/Nav/Product.jsx'
 import Table from './components/Nav/Table.jsx'
@@ -18,7 +17,7 @@ import Menus from './components/Nav/Menus.jsx'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Login/>
+    element: <Login />
   },
   {
     path: '/dashboard',
@@ -30,23 +29,23 @@ const router = createBrowserRouter([
       },
       {
         path: 'tables',
-        element: <Table/>
+        element: <Table />
       },
       {
         path: 'menu',
-        element: <Menus/>
+        element: <Menus />
       },
       {
         path: 'orders',
-        element: <Order/>
+        element: <Order />
       },
       {
         path: 'products',
-        element: <Product/>
+        element: <Product />
       },
       {
         path: 'categories',
-        element: <Categorie/>
+        element: <Categorie />
       }
     ]
   }
