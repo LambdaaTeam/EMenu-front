@@ -10,7 +10,8 @@ import {
   Hide,
   Box,
   Text,
-  theme
+  theme,
+  HStack
 } from '@chakra-ui/react'
 
 import {
@@ -20,7 +21,8 @@ import {
   LogOut,
   Settings,
   ChefHat,
-  Utensils,
+  UtensilsCrossed,
+  ShoppingBasket,
   Tag
 } from 'lucide-react'
 
@@ -31,9 +33,9 @@ const iconProps = {
 
 const links = {
   top: [
-    { to: 'menu', label: 'Menu', icon: <ChefHat  {...iconProps} /> },
+    { to: 'menu', label: 'Menu', icon: <UtensilsCrossed  {...iconProps} /> },
     { to: 'tables', label: 'Mesas', icon: <HandPlatter {...iconProps} /> },
-    { to: 'products', label: 'Produtos', icon: <Utensils {...iconProps} /> },
+    { to: 'products', label: 'Produtos', icon: <ShoppingBasket {...iconProps} /> },
     { to: 'categories', label: 'Categorias', icon: <Tag {...iconProps} /> },
     { to: 'orders', label: 'Pedidos', icon: <NotepadText {...iconProps} /> },
   ],
@@ -100,7 +102,12 @@ const Header = () => {
         <Image src="https://placehold.co/150x40?text=E-Menu+Logo" alt="E-Menu" />
       </Link>
       <SearchBar />
-      <Avatar name={dashboard.name} size="sm" src={dashboard.avatar ?? ""} />
+      <HStack spacing={4}>
+        <Link to='/dashboard/kitchen'>
+          <ChefHat size={24} color={theme.colors.gray[600]} />
+        </Link>
+        <Avatar name={dashboard.name} size="sm" src={dashboard.avatar ?? ""} />
+      </HStack>
     </Stack>
   )
 }
@@ -111,7 +118,7 @@ const Dashboard = () => {
       <Header />
       <Stack direction="" h="100%">
         <Nav />
-        <Flex direction="column" h="100%" w="100%" p={2}>
+        <Flex direction="column" h="100%" w="100%" py={4} px={8}>
           <Outlet />
         </Flex>
       </Stack>

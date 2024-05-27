@@ -12,6 +12,7 @@ import Table from './components/Nav/Table.jsx'
 import Order from './components/Nav/Order.jsx'
 import Categorie from './components/Nav/Categorie.jsx'
 import Menus from './components/Nav/Menus.jsx'
+import Kitchen from './components/Kitchen/Kitchen.jsx'
 
 
 const router = createBrowserRouter([
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
         element: <Categorie />
       }
     ]
+  },
+  {
+    path: '/dashboard/kitchen',
+    element: <Kitchen />
   }
 ])
 
