@@ -1,113 +1,56 @@
-import CardsDetails from './components/Cards/CardsDetails.jsx'
-import Header from './components/Header/Header'
-import Menu from './components/Header/Menu'
-import { useState } from 'react'
-import { Stack } from '@chakra-ui/react'
-import { useCart } from './hooks/Cart'
-import Cart from './components/Cart/Cart'
+import { useState, useEffect } from 'react';
+import { Stack, Spinner } from '@chakra-ui/react';
+import axios from 'axios';
+import CardsDetails from './components/Cards/CardsDetails.jsx';
+import Header from './components/Header/Header';
+import Menu from './components/Header/Menu';
+import { useCart } from './hooks/Cart';
+import Cart from './components/Cart/Cart';
+import { useTable } from './hooks/tableContext.jsx';
 
 function App() {
-  const [showDetails, setShowDetails] = useState(false)
-  const { cart } = useCart()
+  const [showDetails, setShowDetails] = useState(false);
+  const [menu, setMenu] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { cart } = useCart();
+  const token = localStorage.getItem('client_token');
+  const { restaurantId } = useTable();
 
-  const menu = {
-    id: "menu001",
-    restaurant: "Pizzaria KB",
-    highligts: [
-      {
-        id: "item001",
-        name: "Pizza",
-        price: 17.00,
-        description: "Pizza com orégano",
-        image: "https://placehold.co/400"
-      },
-      {
-        id: "item002",
-        name: "Pizza",
-        price: 17.00,
-        description: "Pizza com orégano",
-        image: "https://placehold.co/400"
-      },
-      {
-        id: "item003",
-        name: "Pizza",
-        price: 17.00,
-        description: "Pizza com orégano",
-        image: "https://placehold.co/400"
-      },
-      {
-        id: "item004",
-        name: "Pizza",
-        price: 17.00,
-        description: "Pizza com orégano",
-        image: "https://placehold.co/400"
-      },
-    ],
-    categories: [
-      {
-        id: "category001",
-        name: "Pizzas",
-        items: [
-          {
-            id: "item005",
-            name: "Pizza",
-            image: "https://placehold.co/400",
-            description: "Pizza com queijo",
-            price: 17.00
-          },
-          {
-            id: "item006",
-            name: "Pizza",
-            image: "https://placehold.co/400",
-            description: "Pizza com queijo",
-            price: 17.00
-          },
-          {
-            id: "item007",
-            name: "Pizza",
-            image: "https://placehold.co/400",
-            description: "Pizza com queijo",
-            price: 17.00
-          }
-        ]
-      },
-      {
-        id: "category002",
-        name: "Lanches",
-        items: [
-          {
-            id: "item008",
-            name: "X-tudo",
-            image: "https://placehold.co/400",
-            description: "Ovo, hambúrguer, tomate, queijo, presunto, alface",
-            price: 17.00
-          }
-        ]
-      },
-      {
-        id: "category003",
-        name: "Bebidas",
-        items: [
-          {
-            id: "item009",
-            name: "Coca-cola",
-            image: "https://placehold.co/400",
-            description: "Bebida gaseificada refrescante",
-            price: 17.00
-          }
-        ]
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+
+    const fetchMenu = async () => {
+      try {
+        const response = await axios.get(`https://api.emenu.psykka.xyz/api/v1/restaurants/${restaurantId}/menu`);
+        setMenu(response.data);
+      } catch (error) {
+        console.error('Error fetching the menu:', error);
+      } finally {
+        setLoading(false);
       }
-    ]
-  }
+    };
 
-  const toggleDetails = () => setShowDetails(!showDetails)
+    fetchMenu();
+  }, [token, restaurantId]);
+
+  const toggleDetails = () => setShowDetails(!showDetails);
+
+  if (loading) {
+    return (
+      <GetApp>
+        <Spinner size="xl" />
+      </GetApp>
+    );
+  }
 
   if (showDetails) {
     return (
       <GetApp>
         <CardsDetails toggleDetails={toggleDetails} />
       </GetApp>
-    )
+    );
   }
 
   if (cart.displaying) {
@@ -115,15 +58,19 @@ function App() {
       <GetApp>
         <Cart />
       </GetApp>
-    )
+    );
   }
 
   return (
     <GetApp>
-      <Header title={menu.restaurant} />
-      <Menu menu={menu} toggleDetails={toggleDetails} />
+      {menu && (
+        <>
+          <Header title={menu.restaurant} />
+          <Menu menu={menu} toggleDetails={toggleDetails} />
+        </>
+      )}
     </GetApp>
-  )
+  );
 }
 
 function GetApp({ children }) {
@@ -131,7 +78,7 @@ function GetApp({ children }) {
     <Stack h="100vh" direction="column" spacing={0}>
       {children}
     </Stack>
-  )
+  );
 }
 
-export default App
+export default App;

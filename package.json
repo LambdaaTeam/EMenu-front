@@ -5,5 +5,9 @@
   "private": true,
   "workspaces": [
     "menu", "kitchen", "dashboard"
-  ]
+  ],
+  "dependencies": {
+    "react-imask": "^7.6.1",
+    "axios": "^1.7.2"
+  }
 }

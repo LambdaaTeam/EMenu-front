@@ -7,12 +7,15 @@ import {
   Trash2
 } from 'lucide-react'
 import Confirmation from '../Confirmation/Confirmation'
+import { useTable } from '../../hooks/tableContext'
 
 const CartList = ({ setIsConfirming }) => {
   const { cart, cartTotal, resetCart } = useCart()
+  const {tableNumber, client} = useTable()
+  console.log(tableNumber);
   return (
     <>
-      <Header title={'Sacola'} />
+      <Header title={client.name} />
       <Stack display="flex" flexDirection="column" bg="#F3F3F3" justifyContent="space-between">
         <Stack bg="white" justifyContent="space-between" padding="2" flexDirection="row" alignItems="center">
           <Text color="#B6001F" fontWeight="bold"> Kauan Boaro </Text>

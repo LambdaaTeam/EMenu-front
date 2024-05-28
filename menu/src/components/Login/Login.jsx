@@ -2,38 +2,38 @@ import { useState, useEffect } from 'react';
 import { FormControl, Container, FormLabel, Input, Text, Button, Box, useToast } from '@chakra-ui/react';
 import { IMaskInput } from 'react-imask';
 import axios from 'axios';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTable } from '../../hooks/tableContext.jsx';
-import { useClient } from '../../hooks/clientContext.jsx';
 
 const Login = () => {
   const [name, setName] = useState('');
   const [cpf, setCpf] = useState('');
   const toast = useToast();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams(); // lembrar de adicionar passo para pegar o que vier da URL e adicionar no contexto da table 
-  const { setTableNumber, setTableId, setRestaurantId } = useTable();
-  const { setClient } = useClient();
+  const [searchParams] = useSearchParams();
+  const { setTableNumber, setTableId, setRestaurantId, setClient } = useTable();
+  const { restaurantId } = useParams();
+  const tableNumber = searchParams.get('table');
+  const tableId = searchParams.get('table_id');
 
   useEffect(() => {
-    const tableNumber = searchParams.get('table');
-    const tableId = searchParams.get('table_id');
-    const restaurantId = searchParams.get('restaurant_id');
     setTableNumber(tableNumber);
     setTableId(tableId);
     setRestaurantId(restaurantId);
-  }, [searchParams, setTableNumber, setTableId, setRestaurantId]);
+  }, [tableNumber, tableId, restaurantId, setTableNumber, setTableId, setRestaurantId]);
 
   async function handleLogin(e) {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:8080/api/v1/restaurants/66469e92643d5240b782211a/tables/6646a3b123351923168303ec`, {
+      const response = await axios.post(`https://api.emenu.psykka.xyz/api/v1/restaurants/${restaurantId}/tables/${tableId}`, {
         name,
         cpf,
       });
 
       if (response.status === 200) {
-        setClient(response.data);
+        const data = response.data;
+        setClient({ name, cpf });
+        localStorage.setItem('client_token', data.token);
         toast({
           title: `Seja bem vindo, ${name}!`,
           status: 'success',
@@ -49,7 +49,7 @@ const Login = () => {
         duration: 3000,
       });
     }
-  };
+  }
 
   return (
     <Container h='100vh' d='flex' alignItems='center' justifyContent='center' >

@@ -1,7 +1,15 @@
-import { TabPanel, Text, Button } from '@chakra-ui/react'
+import { TabPanel, Text } from '@chakra-ui/react'
 import CardsDrinks from "../Cards/CardsDrinks"
+import EmptyState from '../../../../dashboard/src/components/ui/EmptyComponent';
 
 const CategoryPanel = ({ category, toggleDetails }) => {
+  if (!category.items) {
+    return (
+      <TabPanel>
+        <EmptyState title="Categoria Vazia" description="Não há itens disponíveis nesta categoria." />
+      </TabPanel>
+    );
+  }
   return (
     <>
       <TabPanel>
