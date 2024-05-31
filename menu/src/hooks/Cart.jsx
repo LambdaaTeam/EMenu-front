@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { api } from '../axios'
+import { useTable } from './tableContext'
 
 const CartContext = createContext()
 
@@ -11,6 +13,7 @@ export const useCart = () => {
 }
 
 export const CartProvider = ({ children }) => {
+    const { table } = useTable()
     const [cart, setCart] = useState({ items: [], displaying: false })
 
     useEffect(() => {
@@ -59,6 +62,13 @@ export const CartProvider = ({ children }) => {
         })
     }
 
+    const pushOrder = async () => {
+        for await (let item of cart.items) {
+            api.post(`/restaurants/${table.restaurantId}/orders/${table.orderId}`, item)
+            .catch((error) => console.log(error))
+        }
+    }
+
     const toggleCart = () => setCart((prevCart) => ({ ...prevCart, displaying: !prevCart.displaying }))
     const setCartDisplaying = (displaying) => setCart((prevCart) => ({ ...prevCart, displaying }))
     const resetCart = () => setCart({ items: [], displaying: false })
@@ -72,7 +82,8 @@ export const CartProvider = ({ children }) => {
             toggleCart,
             setCartDisplaying,
             cartTotal,
-            resetCart
+            resetCart,
+            pushOrder
         }}>
             {children}
         </CartContext.Provider>

@@ -10,8 +10,9 @@ import Confirmation from '../Confirmation/Confirmation'
 import { useTable } from '../../hooks/tableContext'
 
 const CartList = ({ setIsConfirming }) => {
-  const { cart, cartTotal, resetCart } = useCart()
-  const {table} = useTable()
+  const { cart, cartTotal, resetCart, pushOrder } = useCart()
+  const {table} = useTable();
+
   return (
     <>
       <Header title="Sacola" />
@@ -45,7 +46,10 @@ const CartList = ({ setIsConfirming }) => {
               width="100%"
               bg='#B6001F'
               color="white"
-              onClick={() => setIsConfirming(true)}
+              onClick={async () => {
+                setIsConfirming(true)
+                await pushOrder()
+              }}
             >
               Confirmar
             </Button>

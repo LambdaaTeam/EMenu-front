@@ -20,7 +20,7 @@ const CardsHighligts = ({ card, isPromo, onClick }) => {
                         height="20px"
                         width="38px"
                     >
-                        <Text color='white' textAlign="center" marginTop="2px">
+                        <Text color='white' textAlign="center" marginTop="1px" ml={"1px"}>
                             90%
                         </Text>
                     </Badge>

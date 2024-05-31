@@ -26,7 +26,7 @@ const Login = () => {
 
       if (response.status === 200) {
         const data = response.data;
-        await fetchClient({ name, cpf, restaurantId, tableNumber, tableId });
+        await fetchClient({ name, cpf, restaurantId, tableNumber, tableId, orderId: data.id});
         await fetchRestaurant(restaurantId);
         localStorage.setItem('client_token', data.token);
         toast({

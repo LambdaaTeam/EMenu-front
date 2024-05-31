@@ -3,7 +3,7 @@ import { SmallAddIcon, MinusIcon } from '@chakra-ui/icons'
 import { useCart } from '../../hooks/Cart'
 
 const CartItem = ({ cardsDrink }) => {
-    const { name, image, description, price, quantity, id } = cardsDrink
+    const { id, name, image, description, price, quantity, observation } = cardsDrink
     const { removeItem, addItem } = useCart()
 
     const priceTotal = price * quantity
@@ -36,7 +36,7 @@ const CartItem = ({ cardsDrink }) => {
                 </Box>
             </Box>
             <Stack spacing='0' w='100%' direction={'row'}>
-                <Stack>
+                <Stack justify={"space-evenly"} >
                     <Text
                         fontSize='16'
                         fontWeight='bold'
@@ -45,7 +45,7 @@ const CartItem = ({ cardsDrink }) => {
                     </Text>
                     <Text
                         fontSize='12'
-                        color='gray.500'
+                        color='gray.700'
                         maxW='36'
                         noOfLines='2'
                     >
@@ -53,11 +53,13 @@ const CartItem = ({ cardsDrink }) => {
                     </Text>
                     <Text
                         fontSize='12'
+                        color='gray.500'
                         maxW='36'
                         noOfLines='2'
                     >
-                        Ainda nada
+                        Obs: {observation}
                     </Text>
+                    
                 </Stack>
                 <Text
                     fontSize="18"

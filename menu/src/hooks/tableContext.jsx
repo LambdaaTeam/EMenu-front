@@ -9,6 +9,7 @@ export const TableProvider = ({ children }) => {
     restaurantName: '',
     tableNumber: '',
     tableId: '',
+    orderId: '',
     client: {
       name: '',
       cpf: '',
@@ -20,7 +21,7 @@ export const TableProvider = ({ children }) => {
     }
   });
 
-  const fetchClient = ({ restaurantId, tableNumber, tableId, name, cpf }) => {
+  const fetchClient = ({ restaurantId, tableNumber, tableId, name, cpf, orderId }) => {
     setTable(prevTable => ({
       ...prevTable,
       restaurantId,
@@ -30,6 +31,7 @@ export const TableProvider = ({ children }) => {
         name,
         cpf,
       },
+      orderId
     }));
   }
 

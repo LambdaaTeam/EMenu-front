@@ -12,11 +12,13 @@ import {
 import { CloseIcon } from '@chakra-ui/icons'
 import { useDetails } from '../../hooks/Details'
 import { useCart } from '../../hooks/Cart'
+import { useState } from 'react'
 
 const CardsDetails = ({ toggleDetails }) => {
     const { details, setDetails } = useDetails();
     const { addItem } = useCart();
     const { name, price, image, description } = details;
+    const [observation, setObservation] = useState('')
     return (
         <Card h='100%' w='100%' zIndex='999'>
             <Button variant="unstyled" position="absolute" right="0" top="0" onClick={() => {
@@ -39,12 +41,12 @@ const CardsDetails = ({ toggleDetails }) => {
                     <Text >
                         Alguma observação?
                     </Text>
-                    <Textarea name="obs" placeholder='Ex: Trazer copo com gelo, etc.' />
+                    <Textarea value={observation} onChange={(e) => setObservation(e.target.value)} placeholder='Ex: Trazer copo com gelo, etc.'  />
                 </Stack>
             </CardBody>
             <CardFooter>
                 <Button w={'100%'} bg='#B6001F' color="#FFF" onClick={() => {
-                    addItem(details)
+                    addItem({ ...details, observation })
                     setDetails({ name: '', price: '', image: '', description: '' })
                     toggleDetails()
                 }} flexDirection='row' justifyContent='space-between'>
