@@ -3,7 +3,7 @@ import CardsDrinks from "../Cards/CardsDrinks"
 import EmptyState from '../../../../dashboard/src/components/ui/EmptyComponent';
 
 const CategoryPanel = ({ category, toggleDetails }) => {
-  if (!category.items) {
+  if (category.items.length === 0) {
     return (
       <TabPanel>
         <EmptyState title="Categoria Vazia" description="Não há itens disponíveis nesta categoria." />

@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Stack, Spinner } from '@chakra-ui/react';
-import axios from 'axios';
+import { useState } from 'react';
+import { Stack } from '@chakra-ui/react';
 import CardsDetails from './components/Cards/CardsDetails.jsx';
 import Header from './components/Header/Header';
 import Menu from './components/Header/Menu';
@@ -10,40 +9,9 @@ import { useTable } from './hooks/tableContext.jsx';
 
 function App() {
   const [showDetails, setShowDetails] = useState(false);
-  const [menu, setMenu] = useState(null);
-  const [loading, setLoading] = useState(true);
   const { cart } = useCart();
-  const token = localStorage.getItem('client_token');
-  const { restaurantId } = useTable();
-
-  useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    }
-
-    const fetchMenu = async () => {
-      try {
-        const response = await axios.get(`https://api.emenu.psykka.xyz/api/v1/restaurants/${restaurantId}/menu`);
-        setMenu(response.data);
-      } catch (error) {
-        console.error('Error fetching the menu:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMenu();
-  }, [token, restaurantId]);
-
+  const { table } = useTable();
   const toggleDetails = () => setShowDetails(!showDetails);
-
-  if (loading) {
-    return (
-      <GetApp>
-        <Spinner size="xl" />
-      </GetApp>
-    );
-  }
 
   if (showDetails) {
     return (
@@ -60,13 +28,13 @@ function App() {
       </GetApp>
     );
   }
-
+  
   return (
     <GetApp>
-      {menu && (
+      {table.menu && (
         <>
-          <Header title={menu.restaurant} />
-          <Menu menu={menu} toggleDetails={toggleDetails} />
+          <Header title={table.restaurantName} />
+          <Menu menu={table.menu} toggleDetails={toggleDetails} />
         </>
       )}
     </GetApp>

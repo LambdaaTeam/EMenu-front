@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FormControl, Container, FormLabel, Input, Text, Button, Box, useToast } from '@chakra-ui/react';
 import { IMaskInput } from 'react-imask';
-import axios from 'axios';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTable } from '../../hooks/tableContext.jsx';
+import { api } from '../../axios.js';
 
 const Login = () => {
   const [name, setName] = useState('');
@@ -11,28 +11,23 @@ const Login = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { setTableNumber, setTableId, setRestaurantId, setClient } = useTable();
   const { restaurantId } = useParams();
   const tableNumber = searchParams.get('table');
   const tableId = searchParams.get('table_id');
-
-  useEffect(() => {
-    setTableNumber(tableNumber);
-    setTableId(tableId);
-    setRestaurantId(restaurantId);
-  }, [tableNumber, tableId, restaurantId, setTableNumber, setTableId, setRestaurantId]);
+  const {fetchClient, fetchRestaurant} = useTable()
 
   async function handleLogin(e) {
     e.preventDefault();
     try {
-      const response = await axios.post(`https://api.emenu.psykka.xyz/api/v1/restaurants/${restaurantId}/tables/${tableId}`, {
+      const response = await api.post(`/restaurants/${restaurantId}/tables/${tableId}`, {
         name,
         cpf,
       });
 
       if (response.status === 200) {
         const data = response.data;
-        setClient({ name, cpf });
+        await fetchClient({ name, cpf, restaurantId, tableNumber, tableId });
+        await fetchRestaurant(restaurantId);
         localStorage.setItem('client_token', data.token);
         toast({
           title: `Seja bem vindo, ${name}!`,

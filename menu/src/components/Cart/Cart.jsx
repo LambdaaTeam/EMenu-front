@@ -11,15 +11,14 @@ import { useTable } from '../../hooks/tableContext'
 
 const CartList = ({ setIsConfirming }) => {
   const { cart, cartTotal, resetCart } = useCart()
-  const {tableNumber, client} = useTable()
-  console.log(tableNumber);
+  const {table} = useTable()
   return (
     <>
-      <Header title={client.name} />
+      <Header title="Sacola" />
       <Stack display="flex" flexDirection="column" bg="#F3F3F3" justifyContent="space-between">
         <Stack bg="white" justifyContent="space-between" padding="2" flexDirection="row" alignItems="center">
-          <Text color="#B6001F" fontWeight="bold"> Kauan Boaro </Text>
-          <Text color="#B6001F" fontWeight="bold"> Mesa 10 </Text>
+          <Text color="#B6001F" fontWeight="bold"> {table.client.name} </Text>
+          <Text color="#B6001F" fontWeight="bold"> Mesa: {table.tableNumber} </Text>
         </Stack>
         <Stack padding="4" bg="white">
           {cart.items.length > 0 ? cart.items.map(item => <CartItem key={item.id} cardsDrink={item} />) : <Text textAlign={'center'}> Sua sacola está vazia </Text>}

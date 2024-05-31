@@ -3,7 +3,7 @@ import { useCart } from '../../hooks/Cart'
 
 const header = ({ title }) => {
   const { toggleCart, setCartDisplaying, cart } = useCart()
-
+  const {cartTotal} = useCart()
   return (
     <Stack
       width="100%"
@@ -33,7 +33,7 @@ const header = ({ title }) => {
       >
         <Image src='/bag.png' />
         <Stack spacing='0'>
-          <Text fontSize='xs'>R$ 0,00</Text>
+          <Text fontSize='xs'>{cartTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
           <Text fontSize='xs'> {cart.length} items</Text>
         </Stack>
       </Button>

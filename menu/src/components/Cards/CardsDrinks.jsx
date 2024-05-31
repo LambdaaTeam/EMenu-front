@@ -26,7 +26,8 @@ const CardsDrinks = ({ cardsDrink, toggleDetails }) => {
                 toggleDetails()
             }}
         >
-            <Image src={image} objectFit='fill' boxSize='20' />
+            {/* imagem temporária */}
+            <Image src="https://cdn.pixabay.com/photo/2024/05/09/04/11/flamingo-8749724_1280.jpg" objectFit='fill' boxSize='20' />
             <Stack mt='2'>
                 <Text
                     fontSize='14'

@@ -23,7 +23,6 @@ const RedirectToLogin = () => {
   }, [navigate]);
 
   return null;
-
 };
 
 const router = createBrowserRouter([
