@@ -49,6 +49,7 @@ const CartList = ({ setIsConfirming }) => {
               onClick={async () => {
                 setIsConfirming(true)
                 await pushOrder()
+                resetCart()
               }}
             >
               Confirmar

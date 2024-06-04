@@ -16,6 +16,12 @@ const Login = () => {
   const tableId = searchParams.get('table_id');
   const {fetchClient, fetchRestaurant} = useTable()
 
+  const setLocalStorageItems = (items) => {
+    Object.keys(items).forEach(key => {
+      localStorage.setItem(key, items[key]);
+    });
+  };
+
   async function handleLogin(e) {
     e.preventDefault();
     try {
@@ -26,9 +32,14 @@ const Login = () => {
 
       if (response.status === 200) {
         const data = response.data;
-        await fetchClient({ name, cpf, restaurantId, tableNumber, tableId, orderId: data.id});
+        await fetchClient({ name, cpf, tableNumber});
         await fetchRestaurant(restaurantId);
-        localStorage.setItem('client_token', data.token);
+        setLocalStorageItems({
+          'restaurant_id': restaurantId,
+          'client_token': data.token,
+          'order_id': data.id,
+          'table_id': tableId
+        });
         toast({
           title: `Seja bem vindo, ${name}!`,
           status: 'success',

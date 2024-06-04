@@ -4,12 +4,10 @@ import { api } from '../axios';
 const TableContext = createContext();
 
 export const TableProvider = ({ children }) => {
+  const restaurantId = localStorage.getItem('restaurant_id'); 
   const [table, setTable] = useState({
-    restaurantId: '',
     restaurantName: '',
     tableNumber: '',
-    tableId: '',
-    orderId: '',
     client: {
       name: '',
       cpf: '',
@@ -21,17 +19,14 @@ export const TableProvider = ({ children }) => {
     }
   });
 
-  const fetchClient = ({ restaurantId, tableNumber, tableId, name, cpf, orderId }) => {
+  const fetchClient = ({ tableNumber, name, cpf }) => {
     setTable(prevTable => ({
       ...prevTable,
-      restaurantId,
       tableNumber,
-      tableId,
       client: {
         name,
         cpf,
       },
-      orderId
     }));
   }
 
@@ -60,10 +55,10 @@ export const TableProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (table.restaurantId) {
-      fetchMenu(table.restaurantId);
+    if (restaurantId) {
+      fetchMenu(restaurantId);
     }
-  }, [table.restaurantId]);
+  }, [restaurantId]);
 
   return (
     <TableContext.Provider value={{ table, fetchMenu, fetchRestaurant, fetchClient }}>

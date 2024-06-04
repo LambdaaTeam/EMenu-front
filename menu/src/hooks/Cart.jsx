@@ -13,9 +13,9 @@ export const useCart = () => {
 }
 
 export const CartProvider = ({ children }) => {
-    const { table } = useTable()
     const [cart, setCart] = useState({ items: [], displaying: false })
-
+    const restaurantId = localStorage.getItem('restaurant_id')
+    const orderId = localStorage.getItem('order_id')
     useEffect(() => {
         const cart = localStorage.getItem('cart')
         if (cart) {
@@ -64,7 +64,7 @@ export const CartProvider = ({ children }) => {
 
     const pushOrder = async () => {
         for await (let item of cart.items) {
-            api.post(`/restaurants/${table.restaurantId}/orders/${table.orderId}`, item)
+            api.post(`/restaurants/${restaurantId}/orders/${orderId}`, item)
             .catch((error) => console.log(error))
         }
     }
