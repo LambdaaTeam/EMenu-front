@@ -76,8 +76,23 @@ export const DashboardProvider = ({ children }) => {
     return true
   }
 
+  const createTable = async (number) => {
+    const response = await fetchApi('/restaurants/@me/tables', {
+      method: 'POST',
+      body: JSON.stringify({ number: Number(number) })
+    })
+
+    if (!response.ok) {
+      return false
+    }
+
+    await getDashboard()
+
+    return true
+  }
+
   return (
-    <DashboardContext.Provider value={{ dashboard, handleLogin, getDashboard }}>
+    <DashboardContext.Provider value={{ dashboard, handleLogin, getDashboard, createTable }}>
       {children}
     </DashboardContext.Provider>
   )
