@@ -11,7 +11,7 @@ const Login = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { restaurantId } = useParams();
+  const restaurantId = searchParams.get('restaurantId');
   const tableNumber = searchParams.get('table');
   const tableId = searchParams.get('table_id');
   const {fetchClient, fetchRestaurant} = useTable()

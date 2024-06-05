@@ -9,34 +9,14 @@ import { DetailsProvider } from './hooks/Details'
 import { CartProvider } from './hooks/Cart'
 import { TableProvider } from './hooks/tableContext.jsx'
 
-//estaticos por enquanto até a url encurtada funfar
-const restaurantId = "664fdb851fea3bfc294eaf0a";
-const tableNumber = "1";
-const tableId = "664fdbe41fea3bfc294eaf0c";
-
-
-const RedirectToLogin = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    navigate(`/${restaurantId}?table=${tableNumber}&table_id=${tableId}`);
-  }, [navigate]);
-
-  return null;
-};
-
 const router = createBrowserRouter([
-  {
-    path: `/:restaurantId`,
-    element: <Login />,
-  },
   {
     path: "menu",
     element: <App />
   },
   {
     path: "/",
-    element: <RedirectToLogin />
+    element: <Login />
   },
 ]);
 ReactDOM.createRoot(document.getElementById('root')).render(
