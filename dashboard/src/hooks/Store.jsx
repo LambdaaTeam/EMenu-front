@@ -91,8 +91,44 @@ export const DashboardProvider = ({ children }) => {
     return true
   }
 
+  const updateTable = async (tableId, table) => {
+    const response = await fetchApi(`/restaurants/@me/tables/${tableId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ ...table })
+    })
+
+    if (!response.ok) {
+      return false
+    }
+
+    await getDashboard()
+
+    return true
+  }
+
+  const deleteTable = async (tableId) => {
+    const response = await fetchApi(`/restaurants/@me/tables/${tableId}`, {
+      method: 'DELETE'
+    })
+
+    if (!response.ok) {
+      return false
+    }
+
+    await getDashboard()
+
+    return true
+  }
+
   return (
-    <DashboardContext.Provider value={{ dashboard, handleLogin, getDashboard, createTable }}>
+    <DashboardContext.Provider value={{
+      dashboard,
+      handleLogin,
+      getDashboard,
+      createTable,
+      updateTable,
+      deleteTable
+    }}>
       {children}
     </DashboardContext.Provider>
   )

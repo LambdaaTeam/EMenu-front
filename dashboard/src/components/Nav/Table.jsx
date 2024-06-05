@@ -117,7 +117,7 @@ const Table = () => {
 					</Text>
 				</HStack>
 
-				<Grid templateColumns="repeat(4, 1fr)" gap={4} h="100%">
+				<Grid templateColumns="repeat(4, 1fr)" gap={4}>
 					{dashboard.tables.map((table) => (
 						<TableCard key={table.id} table={{ ...table }} />
 					))}
@@ -127,6 +127,7 @@ const Table = () => {
 					colorScheme="red"
 					alignSelf="flex-end"
 					variant="solid"
+					marginTop="auto"
 					onClick={onOpen}
 				>
 					Adicionar Mesa
