@@ -14,6 +14,7 @@ import Categorie from "./components/Nav/Categorie.jsx";
 import Menus from "./components/Nav/Menus.jsx";
 import Kitchen from "./components/Kitchen/Kitchen.jsx";
 import Register from "./components/Register/Register.jsx";
+import Analytics from "./components/Analytics/Analytics";
 
 const router = createBrowserRouter([
 	{
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: <h1>Analytics</h1>,
+				element: <Analytics />,
 			},
 			{
 				path: "tables",
