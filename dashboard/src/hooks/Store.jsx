@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 
 const DashboardContext = createContext()
 
+const endpoint = 'https://api.emenu.psykka.xyz/api/v1'
+
 export const useDashboard = () => {
   const context = useContext(DashboardContext)
   if (!context) {
@@ -11,57 +13,71 @@ export const useDashboard = () => {
 }
 
 export const DashboardProvider = ({ children }) => {
-  // Exemplo de como o estado inicial pode ser definido
-  // TODO: Remover este estado inicial quando a integração com a API for feita
-  const [dashboard, setDashboard] = useState({
-    id: '662b03d839f330bc5518c21d',
-    name: 'Pizzaria VAPO',
-    email: 'psykka@email.com',
-    avatar: 'https://loremflickr.com/300/300/cat',
-    address: {
-      city: 'Matão',
-      country: 'Brazil',
-      postcode: '15990-000',
-      number: 123,
-      street: 'Av. 15 de Novembro',
-      other: ''
-    },
-    tables: [
-      {
-        id: '662b0637e2a7893885a9a30d',
-        number: 12,
-        url: 'https://short.emenu.psykka.xyz/1821',
-        status: 'AVAILABLE', // AVAILABLE | OCCUPIED | RESERVED
-        occupants: []
-      }
-    ],
-    createdat: '2024-04-26T01:31:04.728Z',
-    updatedat: '2024-04-26T01:31:04.728Z'
+  const [dashboard, setDashboard] = useState(() => {
+    const savedDashboard = localStorage.getItem('dashboard')
+    return savedDashboard ? JSON.parse(savedDashboard) : null
   })
 
-  // Exemplo de como fazer uma requisição para a API
-  const fetchTables = useCallback(async () => {
-    // Fazer a requisição para a API
-    const response = await fetch(`https://api.emenu.psykka.xyz/restaurant/@me/tables`)
-
-    // Verificar se a requisição foi bem sucedida
-    if (!response.ok) {
-      throw new Error('Failed to fetch tables')
-    }
-
-    // Transformar a resposta em JSON
-    const data = await response.json()
-
-    // Atualizar o estado global
-    setDashboard((prev) => ({ ...prev, tables: data }))
-  }, [])
+  useEffect(() => {
+    localStorage.setItem('dashboard', JSON.stringify(dashboard))
+  }, [dashboard])
 
   useEffect(() => {
-    fetchTables()
-  }, [fetchTables])
+    getDashboard()
+  }, [])
+
+  // TODO: connect to realtime API
+
+  const fetchApi = async (path, options = {}) => {
+    return await fetch(`${endpoint}${path}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        ...options.headers
+      }
+    })
+  }
+
+  const getDashboard = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      return
+    }
+
+    const restaurantId = JSON.parse(atob(token.split('.')[1])).sub
+
+    const restaurant = await fetchApi(`/restaurants/${restaurantId}`)
+      .then((res) => res.json())
+      .catch(() => null)
+
+    if (!restaurant) {
+      return
+    }
+
+    setDashboard(restaurant)
+  }
+
+  const handleLogin = async (email, password) => {
+    const response = await fetchApi('/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password })
+    })
+
+    if (!response.ok) {
+      return false
+    }
+
+    const token = await response.text()
+    localStorage.setItem('token', token.replace(/"/g, ''))
+
+    await getDashboard()
+
+    return true
+  }
 
   return (
-    <DashboardContext.Provider value={{ dashboard, fetchTables }}>
+    <DashboardContext.Provider value={{ dashboard, handleLogin, getDashboard }}>
       {children}
     </DashboardContext.Provider>
   )
