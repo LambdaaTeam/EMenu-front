@@ -21,9 +21,7 @@ import {
 	LogOut,
 	Settings,
 	ChefHat,
-	UtensilsCrossed,
 	ShoppingBasket,
-	Tag,
 } from "lucide-react";
 
 const iconProps = {
@@ -33,14 +31,12 @@ const iconProps = {
 
 const links = {
 	top: [
-		{ to: "menu", label: "Menu", icon: <UtensilsCrossed {...iconProps} /> },
 		{ to: "tables", label: "Mesas", icon: <HandPlatter {...iconProps} /> },
 		{
 			to: "products",
 			label: "Produtos",
 			icon: <ShoppingBasket {...iconProps} />,
 		},
-		{ to: "categories", label: "Categorias", icon: <Tag {...iconProps} /> },
 		{ to: "orders", label: "Pedidos", icon: <NotepadText {...iconProps} /> },
 	],
 	bottom: [

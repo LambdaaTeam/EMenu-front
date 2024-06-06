@@ -7,11 +7,9 @@ import { DashboardProvider } from "./hooks/Store";
 
 import "./index.css";
 import Login from "./components/Login/Login.jsx";
-import Product from "./components/Nav/Product.jsx";
-import Table from "./components/Nav/Table.jsx";
-import Order from "./components/Nav/Order.jsx";
-import Categorie from "./components/Nav/Categorie.jsx";
-import Menus from "./components/Nav/Menus.jsx";
+import Products from "./components/Nav/Product.jsx";
+import Tables from "./components/Nav/Table.jsx";
+import Orders from "./components/Nav/Order.jsx";
 import Kitchen from "./components/Kitchen/Kitchen.jsx";
 import Register from "./components/Register/Register.jsx";
 import Analytics from "./components/Analytics/Analytics";
@@ -35,23 +33,15 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "tables",
-				element: <Table />,
-			},
-			{
-				path: "menu",
-				element: <Menus />,
+				element: <Tables />,
 			},
 			{
 				path: "orders",
-				element: <Order />,
+				element: <Orders />,
 			},
 			{
 				path: "products",
-				element: <Product />,
-			},
-			{
-				path: "categories",
-				element: <Categorie />,
+				element: <Products />,
 			},
 		],
 	},

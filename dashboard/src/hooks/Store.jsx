@@ -108,7 +108,15 @@ export const DashboardProvider = ({ children }) => {
 			return;
 		}
 
-		setDashboard({ restaurant, orders });
+		const menu = await fetchApi(`/restaurants/${restaurantId}/menu`)
+			.then((res) => res.json())
+			.catch(() => null);
+
+		if (!menu) {
+			return;
+		}
+
+		setDashboard({ restaurant, orders, menu });
 	};
 
 	const handleLogin = async (email, password) => {
@@ -202,6 +210,80 @@ export const DashboardProvider = ({ children }) => {
 		await getDashboard();
 	};
 
+	const createCategory = async (name) => {
+		const response = await fetchApi("/restaurants/@me/menu/categories", {
+			method: "POST",
+			body: JSON.stringify({ name }),
+		});
+
+		if (!response.ok) {
+			return false;
+		}
+
+		await getDashboard();
+
+		return true;
+	};
+
+	const deleteCategory = async (categoryId) => {
+		const response = await fetchApi(
+			`/restaurants/@me/menu/categories/${categoryId}`,
+			{
+				method: "DELETE",
+			},
+		);
+
+		if (!response.ok) {
+			return false;
+		}
+
+		await getDashboard();
+
+		return true;
+	};
+
+	const createItem = async (item) => {
+		const { name, price, description, category } = item;
+
+		const response = await fetchApi(
+			`/restaurants/@me/menu/categories/${category}/items`,
+			{
+				method: "POST",
+				body: JSON.stringify({
+					name,
+					price: Number(price),
+					description,
+					category,
+				}),
+			},
+		);
+
+		if (!response.ok) {
+			return false;
+		}
+
+		await getDashboard();
+
+		return true;
+	};
+
+	const deleteItem = async (categoryId, itemId) => {
+		const response = await fetchApi(
+			`/restaurants/@me/menu/categories/${categoryId}/items/${itemId}`,
+			{
+				method: "DELETE",
+			},
+		);
+
+		if (!response.ok) {
+			return false;
+		}
+
+		await getDashboard();
+
+		return true;
+	};
+
 	return (
 		<DashboardContext.Provider
 			value={{
@@ -213,6 +295,10 @@ export const DashboardProvider = ({ children }) => {
 				deleteTable,
 				updateOrderStatus,
 				updateOrderItemStatus,
+				createCategory,
+				deleteCategory,
+				createItem,
+				deleteItem,
 			}}
 		>
 			{children}
