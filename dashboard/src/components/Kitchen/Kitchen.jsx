@@ -32,6 +32,7 @@ const getFormattedOrder = (orders) => {
 							orderId: order.id,
 							clientName: order.client.name,
 							table: order.table,
+							items: order.items,
 						});
 					} else if (item.status === status.PREPARING) {
 						acc.preparing.push({
@@ -39,6 +40,7 @@ const getFormattedOrder = (orders) => {
 							orderId: order.id,
 							clientName: order.client.name,
 							table: order.table,
+							items: order.items,
 						});
 					} else if (item.status === status.READY) {
 						acc.ready.push({
@@ -46,6 +48,7 @@ const getFormattedOrder = (orders) => {
 							orderId: order.id,
 							clientName: order.client.name,
 							table: order.table,
+							items: order.items,
 						});
 					}
 
@@ -64,8 +67,26 @@ const getFormattedOrder = (orders) => {
 	);
 };
 
+const getProductname = (id, menu) => {
+	let item;
+
+	for (const category of menu.categories) {
+		const item = category.items.find((item) => item.id === id);
+		if (item) {
+			return item.name;
+		}
+	}
+
+	if (!item) {
+		item = menu.highlights.find((item) => item.id === id);
+	}
+
+	return item.name;
+}
+
 const ItemInfo = ({ item, handleNextStatus }) => {
 	const [isLoading, setIsLoading] = useState(false);
+	const { dashboard } = useDashboard();
 
 	return (
 		<Card p={2} bg="white" borderRadius="md" minW="250px">
@@ -83,11 +104,20 @@ const ItemInfo = ({ item, handleNextStatus }) => {
 							Mesa {item.table}
 						</Text>
 					</Flex>
+					<Flex>
+						{item.items.map((product) => (
+							<Stack key={product.id} spacing={1} direction={"row"} alignItems={"center"}>
+								<Text key={product.id} fontSize="sm">
+									{getProductname(product.id, dashboard.menu)}
+								</Text>
+								<Text fontSize="md" fontWeight="bold">
+									x{item.quantity}
+								</Text>
+							</Stack>
+						))}
+					</Flex>
 					<Flex gap={2}>
 						<Text fontSize="md">{item.name}</Text>
-						<Text fontSize="md" fontWeight="bold">
-							x{item.quantity}
-						</Text>
 					</Flex>
 				</Stack>
 				<Button
