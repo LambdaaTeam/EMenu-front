@@ -104,7 +104,7 @@ const ItemInfo = ({ item, handleNextStatus }) => {
 							Mesa {item.table}
 						</Text>
 					</Flex>
-					<Flex>
+					<Flex direction="column">
 						{item.items.map((product) => (
 							<Stack key={product.id} spacing={1} direction={"row"} alignItems={"center"}>
 								<Text key={product.id} fontSize="sm">

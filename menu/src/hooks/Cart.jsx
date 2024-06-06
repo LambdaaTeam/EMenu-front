@@ -1,5 +1,5 @@
+import axios from 'axios'
 import { createContext, useContext, useState, useEffect } from 'react'
-import { api } from '../axios'
 
 const CartContext = createContext()
 
@@ -27,6 +27,14 @@ export const CartProvider = ({ children }) => {
             localStorage.setItem('cart', JSON.stringify(cart))
         }
     }, [cart])
+
+    const api = axios.create({
+        baseURL: 'https://api.emenu.psykka.xyz/api/v1/',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('client_token')
+        },
+    })
 
     const addItem = (item) => {
         setCart((prevCart) => {

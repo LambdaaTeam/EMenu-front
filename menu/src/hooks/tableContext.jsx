@@ -1,10 +1,10 @@
+import axios from 'axios';
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { api } from '../axios';
 
 const TableContext = createContext();
 
 export const TableProvider = ({ children }) => {
-  const restaurantId = localStorage.getItem('restaurant_id'); 
+  const restaurantId = localStorage.getItem('restaurant_id');
   const [table, setTable] = useState({
     restaurantName: '',
     tableNumber: '',
@@ -17,6 +17,13 @@ export const TableProvider = ({ children }) => {
       highlights: [],
       categories: [],
     }
+  });
+
+  const api = axios.create({
+    baseURL: 'https://api.emenu.psykka.xyz/api/v1/',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 
   const fetchClient = ({ tableNumber, name, cpf }) => {
