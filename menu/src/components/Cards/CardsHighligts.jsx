@@ -29,6 +29,7 @@ const CardsHighligts = ({ card, isPromo, onClick }) => {
                     src={image}
                     objectFit="cover"
                     boxSize="150px"
+                    borderRadius="md"
                 />
                 <Stack spacing={0} marginTop="1em" textAlign="center">
                     <Heading fontSize="12px"> {name} </Heading>
