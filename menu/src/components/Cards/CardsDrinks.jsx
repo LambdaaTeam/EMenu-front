@@ -1,11 +1,11 @@
 import {
     Card,
-    Image,
     Stack,
     Text,
     Icon
 } from '@chakra-ui/react'
 import { useDetails } from '../../hooks/Details';
+import ImageWithFallback from '../ui/ImageFallback';
 
 const CardsDrinks = ({ cardsDrink, toggleDetails }) => {
     const { name, price, image, description } = cardsDrink;
@@ -26,8 +26,15 @@ const CardsDrinks = ({ cardsDrink, toggleDetails }) => {
                 toggleDetails()
             }}
         >
-            <Image src={image} objectFit='fill' boxSize='20' />
-            <Stack mt='2'>
+            <ImageWithFallback
+                src={image}
+                objectFit='cover'
+                boxSize='80px'
+                iconSize={4}
+                textSize='sm'
+                borderRadius='md'
+            />
+            <Stack mt='2' flex='1'>
                 <Text
                     fontSize='14'
                     fontWeight='bold'
@@ -36,7 +43,7 @@ const CardsDrinks = ({ cardsDrink, toggleDetails }) => {
                 </Text>
                 <Stack direction='row' gap='1'>
                     <Icon
-                        boxSize='2'
+                        boxSize='4'
                         viewBox='0 0 200 200'
                         color='red.500'
                         alignSelf='center'
@@ -58,7 +65,6 @@ const CardsDrinks = ({ cardsDrink, toggleDetails }) => {
             </Stack>
             <Text
                 alignSelf='center'
-                fontStyle='bold'
                 fontWeight='bold'
                 ml='auto'
                 mr='4'

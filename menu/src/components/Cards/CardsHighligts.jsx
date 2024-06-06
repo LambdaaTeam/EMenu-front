@@ -1,14 +1,14 @@
 import {
     Card, Heading, CardBody, Badge,
-    Stack, Text, Image
-} from '@chakra-ui/react'
-
+    Stack, Text
+} from '@chakra-ui/react';
+import ImageWithFallback from '../ui/ImageFallback';
 
 const CardsHighligts = ({ card, isPromo, onClick }) => {
     const { name, price, image } = card;
     return (
         <Card onClick={onClick} cursor='pointer' minW='100px' justifyContent='center' alignItems='center'>
-            <CardBody>
+            <CardBody position="relative">
                 {!isPromo && (
                     <Badge
                         variant='solid'
@@ -25,11 +25,12 @@ const CardsHighligts = ({ card, isPromo, onClick }) => {
                         </Text>
                     </Badge>
                 )}
-                <Image
+                <ImageWithFallback
                     src={image}
                     objectFit="cover"
+                    boxSize="150px"
                 />
-                <Stack spacing={0} marginTop="1em">
+                <Stack spacing={0} marginTop="1em" textAlign="center">
                     <Heading fontSize="12px"> {name} </Heading>
                     <Text fontSize="12px"> R$ {price} </Text>
                 </Stack>

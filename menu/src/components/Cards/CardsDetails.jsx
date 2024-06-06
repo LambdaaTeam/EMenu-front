@@ -4,7 +4,6 @@ import {
     CardFooter,
     Button,
     Heading,
-    Image,
     Stack,
     Text,
     Textarea
@@ -13,6 +12,7 @@ import { CloseIcon } from '@chakra-ui/icons'
 import { useDetails } from '../../hooks/Details'
 import { useCart } from '../../hooks/Cart'
 import { useState } from 'react'
+import ImageWithFallback from '../ui/ImageFallback'
 
 const CardsDetails = ({ toggleDetails }) => {
     const { details, setDetails } = useDetails();
@@ -20,7 +20,7 @@ const CardsDetails = ({ toggleDetails }) => {
     const { name, price, image, description } = details;
     const [observation, setObservation] = useState('')
     return (
-        <Card h='100%' w='100%' zIndex='999'>
+        <Card h='100%' w='100%' zIndex='999' position="relative" p={4}>
             <Button variant="unstyled" position="absolute" right="0" top="0" onClick={() => {
                 setDetails({ name: '', price: '', image: '', description: '' })
                 toggleDetails()
@@ -28,20 +28,23 @@ const CardsDetails = ({ toggleDetails }) => {
                 <CloseIcon />
             </Button>
             <CardBody>
-                <Stack spacing={4}>
-                    <Heading size='md' fontSize="20px"> {name} </Heading>
-                    <Image
+                <Stack spacing={4} w='100%'>
+                    <Heading size='md' fontSize="20px" w='100%'> {name} </Heading>
+                    <ImageWithFallback
                         src={image}
                         borderRadius='lg'
+                        objectFit='cover'
+                        boxSize='300px'
+                        w='100%'
                     />
-                    <Heading size='md'> Descrição: </Heading>
-                    <Text >
+                    <Heading size='md' w='100%'> Descrição: </Heading>
+                    <Text w='100%'>
                         {description}
                     </Text>
-                    <Text >
+                    <Text w='100%'>
                         Alguma observação?
                     </Text>
-                    <Textarea value={observation} onChange={(e) => setObservation(e.target.value)} placeholder='Ex: Trazer copo com gelo, etc.'  />
+                    <Textarea value={observation} onChange={(e) => setObservation(e.target.value)} placeholder='Ex: Trazer copo com gelo, etc.' w='100%' />
                 </Stack>
             </CardBody>
             <CardFooter>

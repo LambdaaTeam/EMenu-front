@@ -56,6 +56,7 @@ export const TableProvider = ({ children }) => {
 
   useEffect(() => {
     if (restaurantId) {
+      fetchRestaurant(restaurantId);
       fetchMenu(restaurantId);
     }
   }, [restaurantId]);
