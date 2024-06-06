@@ -10,8 +10,11 @@ import {
 	Td,
 	TableContainer,
 } from "@chakra-ui/react";
+import { useDashboard } from "../../hooks/Store";
 
 const Order = () => {
+	const { dashboard } = useDashboard();
+
 	return (
 		<Stack>
 			<Heading>Pedidos</Heading>
@@ -19,27 +22,43 @@ const Order = () => {
 				<Table variant="simple">
 					<Thead>
 						<Tr>
-							<Th>NOME DO CLIENTE</Th>
-							<Th>CPF DO CLIENTE</Th>
-							<Th>MÉTODO DE PAGAMENTO</Th>
-							<Th>PREÇO</Th>
-							<Th>DATA</Th>
-							<Th>STATUS</Th>
+							<Th>Nome</Th>
+							<Th>CPF</Th>
+							<Th>Forma de Pagamento</Th>
+							<Th>Valor</Th>
+							<Th>Data</Th>
+							<Th>Status</Th>
 						</Tr>
 					</Thead>
 					<Tbody>
-						<Tr _hover={{ bg: "gray.100" }} transition="0.3s">
-							<Td fontSize="14px">Kauan Boaro</Td>
-							<Td fontSize="14px">123.123.123-12</Td>
-							<Td fontSize="14px">Cartão de crédito</Td>
-							<Td fontSize="14px">R$200,00</Td>
-							<Td fontSize="14px">03/04/2024</Td>
-							<Td fontSize="14px">
-								<Badge bg="green.400" color="white">
-									Sucesso
-								</Badge>
-							</Td>
-						</Tr>
+						{dashboard.orders.map((order) => (
+							<Tr key={order.id}>
+								<Td>{order.client.name}</Td>
+								<Td>{order.client.cpf}</Td>
+								<Td>{order.payment_method ?? "-"}</Td>
+								<Td>{order.value}</Td>
+								<Td>
+									{new Date(order.created_at).toLocaleDateString("pt-br", {
+										day: "2-digit",
+										month: "2-digit",
+										year: "numeric",
+									})}
+								</Td>
+								<Td>
+									<Badge
+										colorScheme={
+											order.status === "pending"
+												? "orange"
+												: order.status === "completed"
+													? "green"
+													: "red"
+										}
+									>
+										{order.status}
+									</Badge>
+								</Td>
+							</Tr>
+						))}
 					</Tbody>
 				</Table>
 			</TableContainer>
