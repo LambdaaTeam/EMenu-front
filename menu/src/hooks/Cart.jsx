@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { api } from '../axios'
-import { useTable } from './tableContext'
 
 const CartContext = createContext()
 
@@ -64,8 +63,14 @@ export const CartProvider = ({ children }) => {
 
     const pushOrder = async () => {
         for await (let item of cart.items) {
-            api.post(`/restaurants/${restaurantId}/orders/${orderId}`, item)
-            .catch((error) => console.log(error))
+            const packet = {
+                id: item.id,
+                quantity: item.quantity,
+                product: item.id
+            }
+
+            api.post(`/restaurants/${restaurantId}/orders/${orderId}`, packet)
+                .catch((error) => console.log(error))
         }
     }
 
