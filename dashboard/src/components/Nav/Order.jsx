@@ -12,6 +12,14 @@ import {
 } from "@chakra-ui/react";
 import { useDashboard } from "../../hooks/Store";
 
+const StatusBadge = ({ status }) => {
+	return (
+		<Badge colorScheme={status === "PENDING" ? "orange" : "green"}>
+			{status === "PENDING" ? "Pendente" : "Concluído"}
+		</Badge>
+	);
+};
+
 const Order = () => {
 	const { dashboard } = useDashboard();
 
@@ -45,17 +53,7 @@ const Order = () => {
 									})}
 								</Td>
 								<Td>
-									<Badge
-										colorScheme={
-											order.status === "pending"
-												? "orange"
-												: order.status === "completed"
-													? "green"
-													: "red"
-										}
-									>
-										{order.status}
-									</Badge>
+									<StatusBadge status={order.status} />
 								</Td>
 							</Tr>
 						))}

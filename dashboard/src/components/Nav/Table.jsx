@@ -18,7 +18,7 @@ import {
 	Input,
 } from "@chakra-ui/react";
 import TableCard from "../Tables/TableCard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDashboard } from "../../hooks/Store";
 
 const Table = () => {
@@ -83,43 +83,48 @@ const Table = () => {
 				</DrawerOverlay>
 			</Drawer>
 			<VStack align="stretch" spacing={4} h="100%">
-				<HStack align="center" justify="center">
-					<Icon
-						boxSize="2"
-						viewBox="0 0 200 200"
-						color="#45D043"
-						alignSelf="center"
-					>
-						<path
-							fill="currentColor"
-							d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
-						/>
-					</Icon>
-					<Text fontSize="md">Disponível ({available})</Text>
-					<Icon
-						boxSize="2"
-						viewBox="0 0 200 200"
-						color="yellow.400"
-						alignSelf="center"
-					>
-						<path
-							fill="currentColor"
-							d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
-						/>
-					</Icon>
-					<Text fontSize="md">Ocupado ({occupied})</Text>
-					<Icon
-						boxSize="2"
-						viewBox="0 0 200 200"
-						color="gray.400"
-						alignSelf="center"
-					>
-						<path
-							fill="currentColor"
-							d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
-						/>
-					</Icon>
-					<Text fontSize="md">Reservado ({reserved})</Text>
+				<HStack align="center" justify="space-between">
+					<HStack>
+						<Icon
+							boxSize="2"
+							viewBox="0 0 200 200"
+							color="#45D043"
+							alignSelf="center"
+						>
+							<path
+								fill="currentColor"
+								d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
+							/>
+						</Icon>
+						<Text fontSize="md">Disponível ({available})</Text>
+						<Icon
+							boxSize="2"
+							viewBox="0 0 200 200"
+							color="yellow.400"
+							alignSelf="center"
+						>
+							<path
+								fill="currentColor"
+								d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
+							/>
+						</Icon>
+						<Text fontSize="md">Ocupado ({occupied})</Text>
+						<Icon
+							boxSize="2"
+							viewBox="0 0 200 200"
+							color="gray.400"
+							alignSelf="center"
+						>
+							<path
+								fill="currentColor"
+								d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
+							/>
+						</Icon>
+						<Text fontSize="md">Reservado ({reserved})</Text>
+					</HStack>
+					<Button colorScheme="red" variant="solid" onClick={onOpen}>
+						Adicionar Mesa
+					</Button>
 				</HStack>
 
 				<Grid templateColumns="repeat(4, 1fr)" gap={4}>
@@ -127,16 +132,6 @@ const Table = () => {
 						<TableCard key={table.id} table={{ ...table }} />
 					))}
 				</Grid>
-
-				<Button
-					colorScheme="red"
-					alignSelf="flex-end"
-					variant="solid"
-					marginTop="auto"
-					onClick={onOpen}
-				>
-					Adicionar Mesa
-				</Button>
 			</VStack>
 		</>
 	);
