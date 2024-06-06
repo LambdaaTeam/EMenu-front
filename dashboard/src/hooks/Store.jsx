@@ -1,135 +1,190 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { createContext, useContext, useState, useEffect } from "react";
 
-const DashboardContext = createContext()
+const DashboardContext = createContext();
 
-const endpoint = 'https://api.emenu.psykka.xyz/api/v1'
+const endpoint = "https://api.emenu.psykka.xyz/api/v1";
 
 export const useDashboard = () => {
-  const context = useContext(DashboardContext)
-  if (!context) {
-    throw new Error('useDashboard must be used within a DashboardProvider')
-  }
-  return context
-}
+	const context = useContext(DashboardContext);
+	if (!context) {
+		throw new Error("useDashboard must be used within a DashboardProvider");
+	}
+	return context;
+};
 
 export const DashboardProvider = ({ children }) => {
-  const [dashboard, setDashboard] = useState(() => {
-    const savedDashboard = localStorage.getItem('dashboard')
-    return savedDashboard ? JSON.parse(savedDashboard) : null
-  })
+	const [dashboard, setDashboard] = useState(() => {
+		const savedDashboard = localStorage.getItem("dashboard");
+		return savedDashboard ? JSON.parse(savedDashboard) : null;
+	});
 
-  useEffect(() => {
-    localStorage.setItem('dashboard', JSON.stringify(dashboard))
-  }, [dashboard])
+	const [webSocket, setWebSocket] = useState(null);
 
-  useEffect(() => {
-    getDashboard()
-  }, [])
+	useEffect(() => {
+		localStorage.setItem("dashboard", JSON.stringify(dashboard));
+	}, [dashboard]);
 
-  // TODO: connect to realtime API
+	useEffect(() => {
+		connectWebSocket();
+		getDashboard();
+	}, []);
 
-  const fetchApi = async (path, options = {}) => {
-    return await fetch(`${endpoint}${path}`, {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        ...options.headers
-      }
-    })
-  }
+	const connectWebSocket = () => {
+		const ws = new WebSocket("wss://ws.emenu.psykka.xyz/ws");
 
-  const getDashboard = async () => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      return
-    }
+		ws.onopen = () => {
+			const packet = JSON.stringify({
+				type: "auth",
+				data: localStorage.getItem("token"),
+			});
 
-    const restaurantId = JSON.parse(atob(token.split('.')[1])).sub
+			ws.send(packet);
 
-    const restaurant = await fetchApi(`/restaurants/${restaurantId}`)
-      .then((res) => res.json())
-      .catch(() => null)
+			setInterval(() => {
+				const heartbeatPacket = JSON.stringify({
+					type: "heartbeat",
+				});
 
-    if (!restaurant) {
-      return
-    }
+				ws.send(heartbeatPacket);
+			}, 30000);
+		};
 
-    setDashboard(restaurant)
-  }
+		ws.onmessage = (event) => {
+			const data = JSON.parse(event.data);
+			const packet = Object.entries(data).reduce((acc, [key, value]) => {
+				if (value) {
+					acc[key] = value;
+				}
+				return acc;
+			}, {});
 
-  const handleLogin = async (email, password) => {
-    const response = await fetchApi('/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password })
-    })
+			console.log(packet);
 
-    if (!response.ok) {
-      return false
-    }
+			if (packet.type) {
+				getDashboard();
+			}
+		};
 
-    const token = await response.text()
-    localStorage.setItem('token', token.replace(/"/g, ''))
+		ws.onclose = () => {
+			console.log("WebSocket disconnected");
+			connectWebSocket();
+		};
 
-    await getDashboard()
+		setWebSocket(ws);
+	};
 
-    return true
-  }
+	const fetchApi = async (path, options = {}) => {
+		return await fetch(`${endpoint}${path}`, {
+			...options,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				...options.headers,
+			},
+		});
+	};
 
-  const createTable = async (number) => {
-    const response = await fetchApi('/restaurants/@me/tables', {
-      method: 'POST',
-      body: JSON.stringify({ number: Number(number) })
-    })
+	const getDashboard = async () => {
+		const token = localStorage.getItem("token");
+		if (!token) {
+			return;
+		}
 
-    if (!response.ok) {
-      return false
-    }
+		const restaurantId = JSON.parse(atob(token.split(".")[1])).sub;
 
-    await getDashboard()
+		const restaurant = await fetchApi(`/restaurants/${restaurantId}`)
+			.then((res) => res.json())
+			.catch(() => null);
 
-    return true
-  }
+		if (!restaurant) {
+			return;
+		}
 
-  const updateTable = async (tableId, table) => {
-    const response = await fetchApi(`/restaurants/@me/tables/${tableId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ ...table })
-    })
+		const orders = await fetchApi("/restaurants/@me/orders")
+			.then((res) => res.json())
+			.catch(() => null);
 
-    if (!response.ok) {
-      return false
-    }
+		if (!orders) {
+			return;
+		}
 
-    await getDashboard()
+		setDashboard({ restaurant, orders });
+	};
 
-    return true
-  }
+	const handleLogin = async (email, password) => {
+		const response = await fetchApi("/login", {
+			method: "POST",
+			body: JSON.stringify({ email, password }),
+		});
 
-  const deleteTable = async (tableId) => {
-    const response = await fetchApi(`/restaurants/@me/tables/${tableId}`, {
-      method: 'DELETE'
-    })
+		if (!response.ok) {
+			return false;
+		}
 
-    if (!response.ok) {
-      return false
-    }
+		const token = await response.text();
+		localStorage.setItem("token", token.replace(/"/g, ""));
 
-    await getDashboard()
+		await getDashboard();
 
-    return true
-  }
+		return true;
+	};
 
-  return (
-    <DashboardContext.Provider value={{
-      dashboard,
-      handleLogin,
-      getDashboard,
-      createTable,
-      updateTable,
-      deleteTable
-    }}>
-      {children}
-    </DashboardContext.Provider>
-  )
-}
+	const createTable = async (number) => {
+		const response = await fetchApi("/restaurants/@me/tables", {
+			method: "POST",
+			body: JSON.stringify({ number: Number(number) }),
+		});
+
+		if (!response.ok) {
+			return false;
+		}
+
+		await getDashboard();
+
+		return true;
+	};
+
+	const updateTable = async (tableId, table) => {
+		const response = await fetchApi(`/restaurants/@me/tables/${tableId}`, {
+			method: "PATCH",
+			body: JSON.stringify({ ...table }),
+		});
+
+		if (!response.ok) {
+			return false;
+		}
+
+		await getDashboard();
+
+		return true;
+	};
+
+	const deleteTable = async (tableId) => {
+		const response = await fetchApi(`/restaurants/@me/tables/${tableId}`, {
+			method: "DELETE",
+		});
+
+		if (!response.ok) {
+			return false;
+		}
+
+		await getDashboard();
+
+		return true;
+	};
+
+	return (
+		<DashboardContext.Provider
+			value={{
+				dashboard,
+				handleLogin,
+				getDashboard,
+				createTable,
+				updateTable,
+				deleteTable,
+			}}
+		>
+			{children}
+		</DashboardContext.Provider>
+	);
+};

@@ -57,7 +57,7 @@ import { useDashboard } from "../../hooks/Store";
 const TableCard = ({ table }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [newTableNumber, setNewTableNumber] = useState(table.number);
-	const { updateTable, deleteTable } = useDashboard()
+	const { updateTable, deleteTable } = useDashboard();
 
 	const colors = {
 		AVAILABLE: theme.colors.green[400],
@@ -66,18 +66,23 @@ const TableCard = ({ table }) => {
 	};
 
 	const color = colors[table.status];
-	const status = table.status === "AVAILABLE" ? "Disponível" : table.status === "RESERVED" ? "Reservada" : "Ocupada";
+	const status =
+		table.status === "AVAILABLE"
+			? "Disponível"
+			: table.status === "RESERVED"
+				? "Reservada"
+				: "Ocupada";
 	const occupants = table.occupants.length;
 
 	const handleUpdateSubmit = (number) => {
-		updateTable(table.id, number)
-		onClose()
-	}
+		updateTable(table.id, number);
+		onClose();
+	};
 
 	const handleDeleteSubmit = () => {
-		deleteTable(table.id)
-		onClose()
-	}
+		deleteTable(table.id);
+		onClose();
+	};
 
 	return (
 		<>
@@ -86,17 +91,21 @@ const TableCard = ({ table }) => {
 					<DrawerContent>
 						<DrawerCloseButton />
 						<DrawerBody p={4}>
-							<VStack spacing={4} as="form" onSubmit={(e) => e.preventDefault()}>
+							<VStack
+								spacing={4}
+								as="form"
+								onSubmit={(e) => e.preventDefault()}
+							>
 								<VStack spacing={1}>
 									<Link>
-										<Text textDecoration={"underline"}>
-											Imprimir
-										</Text>
+										<Text textDecoration={"underline"}>Imprimir</Text>
 									</Link>
 									<Box p={2} border="1px solid" borderColor="gray.300">
 										<QRCode value={table.url.toString()} />
 									</Box>
-									<Heading size="md" textAlign={'center'}>Mesa {table.number.toString().padStart(2, "0")}</Heading>
+									<Heading size="md" textAlign={"center"}>
+										Mesa {table.number.toString().padStart(2, "0")}
+									</Heading>
 									<Text as="a" href={table.url} target="_blank">
 										{table.url}
 									</Text>
@@ -111,7 +120,10 @@ const TableCard = ({ table }) => {
 											onChange={(e) => setNewTableNumber(e.target.value)}
 											value={newTableNumber}
 										/>
-										<Button colorScheme="green" onClick={() => handleUpdateSubmit(newTableNumber)}>
+										<Button
+											colorScheme="green"
+											onClick={() => handleUpdateSubmit(newTableNumber)}
+										>
 											Atualizar
 										</Button>
 									</Flex>
@@ -124,28 +136,28 @@ const TableCard = ({ table }) => {
 											<Th>Nome</Th>
 											<Th>CPF</Th>
 										</Tr>
-										<Tbody>
-											{table.occupants.map((occupant, index) => (
-												<Tr key={index}>
-													<Td>{occupant.name}</Td>
-													<Td>{occupant.cpf}</Td>
-												</Tr>
-											))}
-										</Tbody>
 									</Thead>
+									<Tbody>
+										{table.occupants.map((occupant) => (
+											<Tr key={occupant.cpf}>
+												<Td>{occupant.name}</Td>
+												<Td>{occupant.cpf}</Td>
+											</Tr>
+										))}
+									</Tbody>
 								</Table>
 							)}
 						</DrawerBody>
 						<DrawerFooter display="flex" justifyContent="space-between">
-							<Button
-								colorScheme="red"
-								gap={2}
-								onClick={handleDeleteSubmit}
-							>
+							<Button colorScheme="red" gap={2} onClick={handleDeleteSubmit}>
 								<Trash2 />
 								Deletar Mesa
 							</Button>
-							<Button colorScheme="blue" isDisabled={table.status !== "OCCUPIED"} onClick={onClose}>
+							<Button
+								colorScheme="blue"
+								isDisabled={table.status !== "OCCUPIED"}
+								onClick={onClose}
+							>
 								Fechar Mesa
 							</Button>
 						</DrawerFooter>
@@ -174,9 +186,7 @@ const TableCard = ({ table }) => {
 					<CardBody>
 						<Box display="flex" spacing="4" alignItems="center" gap={2}>
 							<UserRound />
-							<Text>
-								{occupants}
-							</Text>
+							<Text>{occupants}</Text>
 						</Box>
 					</CardBody>
 				</Card>
