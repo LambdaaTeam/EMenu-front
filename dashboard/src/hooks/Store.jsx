@@ -18,7 +18,7 @@ export const DashboardProvider = ({ children }) => {
 		return savedDashboard ? JSON.parse(savedDashboard) : null;
 	});
 
-	const [webSocket, setWebSocket] = useState(null);
+	const [_webSocket, setWebSocket] = useState(null);
 
 	useEffect(() => {
 		localStorage.setItem("dashboard", JSON.stringify(dashboard));
@@ -173,6 +173,35 @@ export const DashboardProvider = ({ children }) => {
 		return true;
 	};
 
+	const updateOrderStatus = async (orderId, status) => {
+		const response = await fetchApi(
+			`/restaurants/@me/orders/${orderId}/status`,
+			{
+				method: "PATCH",
+				body: JSON.stringify({ status }),
+			},
+		);
+
+		if (!response.ok) {
+			return false;
+		}
+
+		await getDashboard();
+	};
+
+	const updateOrderItemStatus = async (orderId, itemId, status) => {
+		const response = await fetchApi(`/restaurants/@me/orders/${orderId}`, {
+			method: "PATCH",
+			body: JSON.stringify({ id: itemId, status }),
+		});
+
+		if (!response.ok) {
+			return false;
+		}
+
+		await getDashboard();
+	};
+
 	return (
 		<DashboardContext.Provider
 			value={{
@@ -182,6 +211,8 @@ export const DashboardProvider = ({ children }) => {
 				createTable,
 				updateTable,
 				deleteTable,
+				updateOrderStatus,
+				updateOrderItemStatus,
 			}}
 		>
 			{children}

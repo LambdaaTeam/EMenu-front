@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	Box,
 	Flex,
@@ -10,11 +10,13 @@ import {
 	theme,
 } from "@chakra-ui/react";
 import { ArrowBigRight, ArrowLeft, Trash2 } from "lucide-react";
+import { useDashboard } from "../../hooks/Store";
 
 const status = {
 	TO_PREPARE: "TO_PREPARE",
 	PREPARING: "PREPARING",
 	READY: "READY",
+	DELIVERED: "DELIVERED",
 };
 
 const getFormattedOrder = (orders) => {
@@ -27,22 +29,22 @@ const getFormattedOrder = (orders) => {
 					if (item.status === status.TO_PREPARE) {
 						acc.toprepare.push({
 							...item,
-							orderId: order.orderId,
-							clientName: order.name,
+							orderId: order.id,
+							clientName: order.client.name,
 							table: order.table,
 						});
 					} else if (item.status === status.PREPARING) {
 						acc.preparing.push({
 							...item,
-							orderId: order.orderId,
-							clientName: order.name,
+							orderId: order.id,
+							clientName: order.client.name,
 							table: order.table,
 						});
 					} else if (item.status === status.READY) {
 						acc.ready.push({
 							...item,
-							orderId: order.orderId,
-							clientName: order.name,
+							orderId: order.id,
+							clientName: order.client.name,
 							table: order.table,
 						});
 					}
@@ -63,6 +65,8 @@ const getFormattedOrder = (orders) => {
 };
 
 const ItemInfo = ({ item, handleNextStatus }) => {
+	const [isLoading, setIsLoading] = useState(false);
+
 	return (
 		<Card p={2} bg="white" borderRadius="md" minW="250px">
 			<HStack justifyContent="space-between">
@@ -88,7 +92,12 @@ const ItemInfo = ({ item, handleNextStatus }) => {
 				</Stack>
 				<Button
 					bg="transparent"
-					onClick={() => handleNextStatus(item.orderId, item.id)}
+					isLoading={isLoading}
+					onClick={async () => {
+						setIsLoading(true);
+						await handleNextStatus(item.orderId, item.id);
+						setIsLoading(false);
+					}}
 				>
 					{item.status === status.READY ? (
 						<Trash2 color={theme.black} size={32} />
@@ -102,94 +111,37 @@ const ItemInfo = ({ item, handleNextStatus }) => {
 };
 
 const Kitchen = () => {
-	const [orders, setOrders] = useState([
-		{
-			name: "Felipe Kamada",
-			orderId: 1,
-			table: 1,
-			items: [
-				{
-					id: 1,
-					name: "Item 1",
-					price: 10.0,
-					status: status.TO_PREPARE,
-					quantity: 1,
-				},
-				{
-					id: 2,
-					name: "Item 2",
-					price: 15.0,
-					status: status.PREPARING,
-					quantity: 1,
-				},
-				{
-					id: 3,
-					name: "Item 3",
-					price: 20.0,
-					status: status.TO_PREPARE,
-					quantity: 1,
-				},
-			],
-		},
-		{
-			name: "Felipe Kamada",
-			orderId: 2,
-			table: 2,
-			items: [
-				{
-					id: 4,
-					name: "Item 4",
-					price: 10.0,
-					status: status.TO_PREPARE,
-					quantity: 2,
-				},
-				{
-					id: 5,
-					name: "Item 5",
-					price: 15.0,
-					status: status.READY,
-					quantity: 1,
-				},
-				{
-					id: 6,
-					name: "Item 6",
-					price: 20.0,
-					status: status.READY,
-					quantity: 1,
-				},
-			],
-		},
-	]);
+	const { dashboard, updateOrderItemStatus } = useDashboard();
+	const [orders, setOrders] = useState([]);
+	useEffect(() => {
+		const orders = dashboard.orders.map((order) => ({
+			...order,
+			table:
+				dashboard.restaurant.tables.find((table) => table.id === order.table)
+					?.number ?? 0,
+		}));
+
+		setOrders(orders);
+	}, [dashboard.orders, dashboard.restaurant.tables]);
 
 	const { toprepare, preparing, ready } = getFormattedOrder(orders);
 
-	const handleNextStatus = (orderId, itemId) => {
-		const updatedOrders = orders.map((order) => {
-			if (order.orderId === orderId) {
-				const updatedItems = order.items.map((item) => {
-					if (item.id === itemId) {
-						if (item.status === status.TO_PREPARE) {
-							item.status = status.PREPARING;
-						} else if (item.status === status.PREPARING) {
-							item.status = status.READY;
-						} else if (item.status === status.READY) {
-							return null;
-						}
+	const handleNextStatus = async (orderId, itemId) => {
+		for (const order of orders) {
+			for (const item of order.items) {
+				if (item.id === itemId) {
+					if (item.status === status.TO_PREPARE) {
+						item.status = status.PREPARING;
+						await updateOrderItemStatus(orderId, itemId, status.PREPARING);
+					} else if (item.status === status.PREPARING) {
+						item.status = status.READY;
+						await updateOrderItemStatus(orderId, itemId, status.READY);
+					} else if (item.status === status.READY) {
+						await updateOrderItemStatus(orderId, itemId, status.DELIVERED);
 					}
-
-					return item;
-				});
-
-				return {
-					...order,
-					items: updatedItems ? updatedItems.filter(Boolean) : [],
-				};
+				}
 			}
-
-			return order;
-		});
-
-		setOrders(updatedOrders);
+		}
 	};
 
 	return (
